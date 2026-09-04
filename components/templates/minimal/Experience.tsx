@@ -1,0 +1,6 @@
+import { scriptFont, serifFont } from "./fonts";
+interface ExperienceProps { data: any; }
+export default function Experience({ data }: ExperienceProps) {
+ const items = data.experience ?? [];
+ return <section id="experience" className="bg-[#EDE2CE] px-8 py-32 text-[#46392E]"><div className="mx-auto max-w-7xl"><span className={`${scriptFont.className} text-2xl text-[#7C8264]`}>where I have worked</span><h2 className={`${serifFont.className} mt-2 text-5xl font-semibold`}>Experience</h2><p className="mt-5 max-w-3xl text-[#8B7B68]">Professional experience and roles.</p>{items.length===0?<p className="mt-12 text-[#8B7B68]">No experience added yet.</p>:<div className="mt-16 space-y-8">{items.map((item:any)=><article key={item.id} className="rounded-sm border border-[#DCCBA8] bg-[#FFFDF8] p-8 shadow-[0_14px_30px_rgba(70,57,46,0.08)]"><div className="flex flex-col justify-between gap-3 md:flex-row"><div><h3 className="text-2xl font-bold">{item.position || item.job_title || item.title || "Experience"}</h3>{item.company&&<p className="mt-2 text-lg text-[#7C8264]">{item.company}</p>}</div><p className="text-sm uppercase tracking-wide text-[#7C8264]">{item.start_date||""} — {item.is_current?"Present":item.end_date||""}</p></div>{item.description&&<p className="mt-6 max-w-4xl leading-8 text-[#5E5142]">{item.description}</p>}</article>)}</div>}</div></section>;
+}

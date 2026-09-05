@@ -103,7 +103,7 @@ export default function SettingsDanger() {
         Danger Zone
       </h2>
 
-      <p className="mt-2 text-[#5F6368]">
+      <p className="mt-2 text-[#4F5358]">
         These actions are permanent and cannot be undone.
       </p>
 
@@ -115,7 +115,7 @@ export default function SettingsDanger() {
               Delete Portfolio
             </h3>
 
-            <p className="mt-1 text-sm text-[#5F6368]">
+            <p className="mt-1 text-sm text-[#4F5358]">
               Permanently remove your portfolio data while keeping your
               account.
             </p>
@@ -138,7 +138,7 @@ export default function SettingsDanger() {
               Delete Account
             </h3>
 
-            <p className="mt-1 text-sm text-[#5F6368]">
+            <p className="mt-1 text-sm text-[#4F5358]">
               Permanently delete your account and all associated data.
             </p>
           </div>

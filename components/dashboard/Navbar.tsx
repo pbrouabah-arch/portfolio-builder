@@ -38,7 +38,7 @@ export default function Navbar() {
       {/* Left side */}
       <div className="min-w-0">
         <h2 className="truncate text-2xl font-bold text-[#4B543B] lg:text-3xl">
-          Good afternoon,{" "}
+          Take a look around,{" "}
           {loading
             ? "..."
             : fullName.split(" ")[0]}{" "}

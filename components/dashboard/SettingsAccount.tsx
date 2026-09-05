@@ -134,7 +134,7 @@ export default function SettingsAccount() {
             className="w-full rounded-2xl border border-[#CFC4B2] bg-[#F5F3EF] p-4 text-[#2F3A25] outline-none placeholder:text-[#6B7280]"
           />
 
-          <p className="mt-2 text-sm text-[#5F6368]">
+          <p className="mt-2 text-sm text-[#4F5358]">
             Your email address is connected to your account.
           </p>
         </div>
@@ -156,7 +156,7 @@ export default function SettingsAccount() {
             className="w-full rounded-2xl border border-[#CFC4B2] bg-white p-4 text-[#2F3A25] outline-none transition placeholder:text-[#6B7280] focus:border-[#8E77A8] focus:ring-2 focus:ring-[#8E77A8]/20 disabled:bg-[#F5F3EF]"
           />
 
-          <p className="mt-2 text-sm text-[#5F6368]">
+          <p className="mt-2 text-sm text-[#4F5358]">
             This username is used for your public portfolio URL.
           </p>
 

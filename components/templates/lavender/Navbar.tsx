@@ -17,6 +17,9 @@ const links = [
   { name: "Skills", href: "#skills" },
   { name: "Projects", href: "#projects" },
   { name: "Certificates", href: "#certificates" },
+  { name: "Education", href: "#education" },
+  { name: "Experience", href: "#experience" },
+  { name: "Achievements", href: "#achievements" },
   { name: "Contact", href: "#contact" },
 ];
 
@@ -38,30 +41,33 @@ export default function Navbar({
 
   return (
     <>
-      <header className="fixed left-0 top-0 z-50 w-full px-4 pt-4 lg:px-8">
-        <div
-          className={`mx-auto flex h-16 max-w-5xl items-center justify-between rounded-full px-6 transition-all duration-300 ${
-            scrolled
-              ? "bg-white/70 shadow-[0_8px_30px_rgba(51,65,92,0.15)] backdrop-blur-xl"
-              : "bg-white/40 backdrop-blur-md"
-          } border border-white/70`}
-        >
+      <header
+        className={`fixed left-0 top-0 z-50 w-full transition-all duration-300 ${
+          scrolled
+            ? "bg-white/80 shadow-[0_8px_25px_rgba(51,65,92,0.1)] backdrop-blur-xl"
+            : "bg-white/40 backdrop-blur-md"
+        }`}
+      >
+        <div className="mx-auto flex h-20 max-w-7xl items-center gap-4 px-6 py-3 lg:px-8">
 
           <a
             href="#"
-            className={`${scriptFont.className} flex items-center gap-1.5 text-2xl text-[#33415C]`}
+            className={`${scriptFont.className} flex shrink-0 items-center gap-1.5 text-2xl text-[#33415C]`}
           >
             {data.name}
             <Heart size={14} className="fill-[#8FAEE0] text-[#8FAEE0]" />
           </a>
 
-          <nav className="hidden items-center gap-8 lg:flex">
+          <nav
+            className="hidden min-w-0 flex-1 items-center gap-5 overflow-x-auto whitespace-nowrap px-1 [&::-webkit-scrollbar]:hidden xl:flex"
+            style={{ scrollbarWidth: "none" }}
+          >
 
             {links.map((link) => (
               <a
                 key={link.name}
                 href={link.href}
-                className="text-xs font-medium uppercase tracking-[0.15em] text-[#5A6B8C] transition hover:text-[#33415C]"
+                className="shrink-0 text-xs font-medium uppercase tracking-wide text-[#5A6B8C] transition hover:text-[#33415C]"
               >
                 {link.name}
               </a>
@@ -71,14 +77,14 @@ export default function Navbar({
 
           <a
             href="#contact"
-            className="hidden items-center gap-2 rounded-full bg-[#7A97D1] px-5 py-2.5 text-xs font-semibold uppercase tracking-wide text-white transition hover:scale-105 hover:bg-[#5A73A8] lg:flex"
+            className="hidden shrink-0 items-center gap-2 rounded-full bg-[#7A97D1] px-5 py-2.5 text-xs font-semibold uppercase tracking-wide text-white transition hover:scale-105 hover:bg-[#5A73A8] xl:flex"
           >
             Say hello
           </a>
 
           <button
             onClick={() => setOpen(!open)}
-            className="text-[#33415C] lg:hidden"
+            className="ml-auto text-[#33415C] xl:hidden"
             aria-label={open ? "Close menu" : "Open menu"}
           >
             {open ? <X size={24} /> : <Menu size={24} />}
@@ -95,20 +101,20 @@ export default function Navbar({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-40 bg-gradient-to-b from-[#DCE6F8] to-[#AEC3E8] lg:hidden"
+            className="fixed inset-0 z-40 overflow-y-auto bg-gradient-to-b from-[#DCE6F8] to-[#AEC3E8] xl:hidden"
           >
 
             <Sparkle className="absolute left-10 top-24 h-5 w-5 opacity-70" />
             <Sparkle className="absolute right-12 bottom-28 h-6 w-6 opacity-70" />
 
-            <div className="flex h-full flex-col items-center justify-center gap-8">
+            <div className="flex min-h-full flex-col items-center justify-center gap-7 py-24">
 
               {links.map((link) => (
                 <a
                   key={link.name}
                   href={link.href}
                   onClick={() => setOpen(false)}
-                  className={`${scriptFont.className} text-4xl text-[#33415C]`}
+                  className={`${scriptFont.className} text-3xl text-[#33415C]`}
                 >
                   {link.name}
                 </a>

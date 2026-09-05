@@ -10,7 +10,6 @@ import {
   Link2,
 } from "lucide-react";
 
-import Butterfly from "./decor/Butterfly";
 import Sparkle from "./decor/Sparkle";
 import { scriptFont, serifFont } from "./fonts";
 
@@ -83,8 +82,6 @@ export default function Contact({
       ref={container}
       className="relative overflow-hidden bg-gradient-to-b from-[#E4ECF9] via-[#D6E1F4] to-[#C3D4F0] py-28 px-6 text-[#33415C] lg:px-8"
     >
-      <Butterfly className="pointer-events-none absolute left-[10%] top-16 h-10 w-12 opacity-80" />
-      <Butterfly className="pointer-events-none absolute right-[14%] bottom-20 h-8 w-10 rotate-12 opacity-70" />
       <Sparkle className="pointer-events-none absolute right-[30%] top-10 h-5 w-5 opacity-70" />
 
       <div className="relative mx-auto max-w-4xl text-center">

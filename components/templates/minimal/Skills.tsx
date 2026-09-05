@@ -1,7 +1,7 @@
 "use client";
 
 import { scriptFont, serifFont } from "./fonts";
-
+import Tape from "./decor/Tape";
 interface SkillsProps {
   data: any;
 }
@@ -50,11 +50,16 @@ export default function Skills({
 
             {skills.map((skill: any, index: number) => (
 
-              <div
-                key={skill.id}
-                className="rounded-sm border border-[#DCCBA8] bg-[#FFFDF8] p-8 shadow-[0_10px_25px_rgba(70,57,46,0.06)]"
+             <div
+               key={skill.id}
+                className="relative rounded-sm border border-[#DCCBA8] bg-[#FFFDF8] p-8 shadow-[0_10px_25px_rgba(70,57,46,0.06)]"
                 style={{ transform: `rotate(${index % 2 === 0 ? -0.6 : 0.6}deg)` }}
               >
+                <Tape
+                 tone={index % 2 === 0 ? "tape" : "blush"}
+                 rotate={index % 2 === 0 ? -5 : 5}
+                 className="left-1/2 -top-4 -translate-x-1/2"
+                />
 
                 <div className="mb-5 flex items-center justify-between">
 

@@ -1,5 +1,5 @@
 import { scriptFont, serifFont } from "./fonts";
-
+import Tape from "./decor/Tape";
 interface AboutProps {
   data: any;
 }
@@ -22,13 +22,19 @@ export default function About({
           About Me
         </h2>
 
-        <div className="relative max-w-3xl rounded-sm border border-[#DCCBA8] bg-[#FFFDF8] p-10 shadow-[0_18px_40px_rgba(70,57,46,0.08)]">
+       <div className="relative mt-16 max-w-3xl rounded-sm border border-[#DCCBA8] bg-[#FFFDF8] p-10 shadow-[0_18px_40px_rgba(70,57,46,0.08)]">
 
-          <p className="text-lg leading-9 text-[#5E5142]">
-            {data.description}
-          </p>
+  <Tape
+    tone="tape"
+    rotate={-5}
+    className="left-1/2 -top-4 -translate-x-1/2"
+  />
 
-        </div>
+  <p className="text-lg leading-9 text-[#5E5142]">
+    {data.description}
+  </p>
+
+</div>
 
 
       </div>

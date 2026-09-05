@@ -47,18 +47,18 @@ export default function Hero({ data }: HeroProps) {
     >
       <Background />
 
-      <div className="relative z-10 mx-auto flex min-h-screen max-w-7xl items-center justify-between px-8 pt-24 lg:pt-0">
+      <div className="relative z-10 mx-auto grid min-h-screen w-full max-w-7xl grid-cols-1 items-center gap-14 px-6 pt-24 sm:px-8 lg:grid-cols-[minmax(0,1fr)_460px] lg:gap-10 lg:px-10 lg:pt-0">
 
-        <div className="hero-left max-w-2xl">
+        <div className="hero-left min-w-0 max-w-2xl lg:pr-4">
 
-
+         
           <h1
             className={`${scriptFont.className} mt-8 text-6xl leading-none text-[#4B5140] lg:text-7xl`}
           >
             Hi, I'm
           </h1>
 
-          <h2 className="mt-3 text-6xl font-black leading-none text-[#362C23] sm:text-6xl lg:text-6xl">
+          <h2 className="mt-3 text-5xl font-black leading-none text-[#362C23] sm:text-4xl lg:text-4xl">
             {data.name}
           </h2>
 
@@ -128,10 +128,10 @@ export default function Hero({ data }: HeroProps) {
         <motion.div
           whileHover={{ scale: 1.02, rotate: 0 }}
           transition={{ type: "spring", stiffness: 180 }}
-          className="hero-image relative hidden translate-x-12 -rotate-3 lg:flex items-center justify-center"
+          className="hero-image relative mx-auto hidden h-[540px] w-[460px] -rotate-3 items-center justify-center lg:flex"
         >
 
-          <div className="absolute h-[480px] w-[420px] rounded-sm bg-[#F5F0E6] p-4 pb-16 shadow-[0_25px_60px_rgba(54,44,35,0.3)]">
+          <div className="absolute inset-x-5 top-7 h-[480px] w-[420px] rounded-sm bg-[#F5F0E6] p-4 pb-16 shadow-[0_25px_60px_rgba(54,44,35,0.3)]">
 
             <div className="relative h-full w-full overflow-hidden bg-[#E0D3B5]">
               <Image
@@ -151,7 +151,7 @@ export default function Hero({ data }: HeroProps) {
           </div>
 
           <Tape
-            className="left-1/2 top-[-10px] -translate-x-1/2"
+            className="left-1/2 top-3 z-20 -translate-x-1/2"
             rotate={-3}
           />
 

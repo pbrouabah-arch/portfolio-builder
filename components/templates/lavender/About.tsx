@@ -1,5 +1,4 @@
 import Tape from "./decor/Tape";
-import Seal from "./decor/Seal";
 import Sparkle from "./decor/Sparkle";
 import { scriptFont, serifFont } from "./fonts";
 
@@ -29,48 +28,25 @@ export default function About({
             About Me
           </h2>
 
-          <div
-            className="relative bg-white p-9 shadow-[0_20px_45px_rgba(51,65,92,0.1)] sm:p-12"
-            style={{ clipPath: "polygon(0 2%, 100% 0, 99% 98%, 1% 100%)" }}
-          >
+          <div className="relative mt-14">
 
-            <Tape className="left-10 top-0 -translate-y-1/2" rotate={-6} />
+            <Tape className="left-1/2 top-0 -translate-x-1/2 -translate-y-1/2" rotate={-6} />
 
-            <Seal className="absolute -right-6 -top-6 h-16 w-16 opacity-90" rotate={8} />
+            <div
+              className="relative bg-white p-9 shadow-[0_20px_45px_rgba(51,65,92,0.1)] sm:p-12"
+              style={{ clipPath: "polygon(0 2%, 100% 0, 99% 98%, 1% 100%)" }}
+            >
 
-            <p className={`${serifFont.className} text-xl italic leading-9 text-[#4C5C7D]`}>
-              {data.description}
-            </p>
+              <p className={`${serifFont.className} text-xl italic leading-9 text-[#4C5C7D]`}>
+                {data.description}
+              </p>
+
+            </div>
 
           </div>
 
         </div>
 
-        <div className="grid grid-cols-2 gap-5">
-
-          {data.stats.map((item: any, index: number) => (
-            <div
-              key={item.title}
-              className="relative rounded-2xl bg-white p-7 text-center shadow-[0_14px_30px_rgba(51,65,92,0.08)] transition duration-300 hover:-translate-y-1"
-              style={{ transform: `rotate(${index % 2 === 0 ? -2 : 2}deg)` }}
-            >
-              <Tape
-                className="left-1/2 top-0 -translate-x-1/2 -translate-y-1/2"
-                rotate={index % 2 === 0 ? -8 : 6}
-              />
-
-              <h3 className={`${serifFont.className} text-4xl font-bold text-[#7A97D1]`}>
-                {item.number}
-              </h3>
-
-              <p className="mt-2 text-xs uppercase tracking-widest text-[#7C8FAE]">
-                {item.title}
-              </p>
-
-            </div>
-          ))}
-
-        </div>
 
       </div>
     </section>

@@ -13,15 +13,16 @@ export default function Tape({
   rotate = -4,
   tone = "tape",
 }: TapeProps) {
-  const bg = tone === "blush" ? "bg-[#D9B9A6]/80" : "bg-[#E4D3B0]/85";
+  const bg = tone === "blush" ? "bg-[#D9B9A6]/80" : "bg-[#E4D3B0]/90";
 
   return (
     <span
       aria-hidden="true"
-      className={`pointer-events-none absolute h-6 w-16 ${bg} shadow-[0_2px_4px_rgba(70,57,46,0.15)] ${className}`}
+      className={`pointer-events-none absolute h-7 w-[76px] ${bg} shadow-[0_2px_5px_rgba(70,57,46,0.18)] ${className}`}
       style={{
         transform: `rotate(${rotate}deg)`,
-        clipPath: "polygon(3% 0, 97% 0, 100% 100%, 0% 100%)",
+        opacity: 0.92,
+        clipPath: "polygon(3% 0, 97% 0, 100% 92%, 94% 100%, 4% 97%, 0 88%)",
       }}
     />
   );

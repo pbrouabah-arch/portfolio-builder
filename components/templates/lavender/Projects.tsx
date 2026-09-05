@@ -55,7 +55,7 @@ export default function Projects({
               >
 
                 <PaperClip
-                  className="absolute -top-6 left-1/2 h-12 w-10 -translate-x-1/2"
+                  className="absolute -top-8 left-1/2 h-16 w-14 -translate-x-1/2"
                   rotate={index % 2 === 0 ? -8 : 8}
                 />
 
@@ -94,16 +94,6 @@ export default function Projects({
                       </a>
                     )}
 
-                    {project.live_url && (
-                      <a
-                        href={project.live_url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="rounded-full bg-[#7A97D1] px-4 py-2 text-xs font-semibold uppercase tracking-wide text-white hover:bg-[#5A73A8]"
-                      >
-                        Live Demo
-                      </a>
-                    )}
 
                   </div>
 

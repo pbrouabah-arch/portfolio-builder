@@ -47,7 +47,7 @@ export default function Navbar({
             : "bg-transparent"
         }`}
       >
-        <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6">
+        <div className="mx-auto flex w-full max-w-none items-center justify-between px-6 lg:px-8">
 
           <a
             href="#"
@@ -56,7 +56,7 @@ export default function Navbar({
             {data.name}
           </a>
 
-          <nav className="hidden items-center gap-10 lg:flex">
+          <nav className="hidden items-center gap-6 lg:flex">
 
             {links.map((link) => (
               <a

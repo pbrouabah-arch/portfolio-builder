@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { X, ExternalLink } from "lucide-react";
 import { scriptFont, serifFont } from "./fonts";
-
+import Tape from "./decor/Tape";
 interface CertificatesProps { data: any; }
 
 export default function Certificates({ data }: CertificatesProps) {
@@ -40,6 +40,7 @@ export default function Certificates({ data }: CertificatesProps) {
                   <p className="mt-5 text-sm font-semibold uppercase tracking-wider text-[#7C8264]">Click to view</p>
                 </div>
               </button>
+              
             ))}
           </div>
         )}

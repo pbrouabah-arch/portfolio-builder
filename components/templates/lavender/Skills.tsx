@@ -62,12 +62,11 @@ export default function Skills({
                 style={{ transform: `rotate(${index % 2 === 0 ? -1 : 1}deg)` }}
               >
 
-                {index % 4 === 0 && (
-                  <Tape
-                    className="left-8 top-0 -translate-y-1/2"
-                    rotate={-6}
-                  />
-                )}
+                <Tape
+                  tone={index % 2 === 0 ? "tape" : "blush"}
+                  className="left-1/2 top-0 -translate-x-1/2 -translate-y-1/2"
+                  rotate={index % 2 === 0 ? -6 : 6}
+                />
 
                 <Heart size={22} className="shrink-0 fill-[#7A97D1] text-[#7A97D1]" />
 

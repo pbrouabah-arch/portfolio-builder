@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { Eye, EyeOff } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 
 export default function LoginPage() {
@@ -10,6 +11,8 @@ export default function LoginPage() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const [showPassword, setShowPassword] = useState(false);
 
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
@@ -109,31 +112,59 @@ export default function LoginPage() {
               Password
             </label>
 
-            <input
-              id="password"
-              type="password"
-              placeholder="Enter your password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              autoComplete="current-password"
-              className="
-                w-full
-                rounded-xl
-                border
-                border-[#D8D2C8]
-                bg-white
-                px-4
-                py-4
-                text-[#2F3A25]
-                placeholder:text-[#9CA3AF]
-                outline-none
-                transition
-                focus:border-[#8E77A8]
-                focus:ring-2
-                focus:ring-[#8E77A8]/20
-              "
-            />
+            <div className="relative">
+              <input
+                id="password"
+                type={showPassword ? "text" : "password"}
+                placeholder="Enter your password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                autoComplete="current-password"
+                className="
+                  w-full
+                  rounded-xl
+                  border
+                  border-[#D8D2C8]
+                  bg-white
+                  px-4
+                  py-4
+                  pr-12
+                  text-[#2F3A25]
+                  placeholder:text-[#9CA3AF]
+                  outline-none
+                  transition
+                  focus:border-[#8E77A8]
+                  focus:ring-2
+                  focus:ring-[#8E77A8]/20
+                "
+              />
+
+              <button
+                type="button"
+                onClick={() => setShowPassword((prev) => !prev)}
+                aria-label={
+                  showPassword
+                    ? "Hide password"
+                    : "Show password"
+                }
+                className="
+                  absolute
+                  right-4
+                  top-1/2
+                  -translate-y-1/2
+                  text-[#8B8175]
+                  transition
+                  hover:text-[#8E77A8]
+                "
+              >
+                {showPassword ? (
+                  <EyeOff size={21} />
+                ) : (
+                  <Eye size={21} />
+                )}
+              </button>
+            </div>
           </div>
 
           {/* ERROR MESSAGE */}

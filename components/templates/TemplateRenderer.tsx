@@ -1,5 +1,6 @@
 import MinimalTemplate from "./minimal";
 import LavenderMemoriesTemplate from "./lavender";
+import LightningTemplate from "./lightning";
 
 interface TemplateRendererProps {
   template: string;
@@ -16,6 +17,8 @@ export default function TemplateRenderer({
 
     case "lavender":
       return <LavenderMemoriesTemplate data={data} />;
+    case "lightning":
+      return <LightningTemplate data={data} />;
 
     default:
       return <MinimalTemplate data={data} />;

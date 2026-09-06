@@ -1,7 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Search, UserCircle, Sparkles } from "lucide-react";
+import {
+  Menu,
+  UserCircle,
+} from "lucide-react";
 import Image from "next/image";
 import { getProfile, type Profile } from "@/lib/profiles";
 
@@ -24,6 +27,10 @@ export default function Navbar() {
     }
   }
 
+  function openMobileSidebar() {
+    window.dispatchEvent(new Event("toggle-mobile-sidebar"));
+  }
+
   const fullName = profile?.full_name || "User";
 
   const jobTitle =
@@ -33,32 +40,40 @@ export default function Navbar() {
     profile?.avatar_url || null;
 
   return (
-    <header className="sticky top-0 z-40 flex min-h-20 items-center justify-between gap-6 border-b border-[#DDD4C5] bg-[#F5F1E8]/90 px-6 py-3 backdrop-blur-lg lg:px-10">
-
+    <header className="sticky top-0 z-40 flex min-h-20 items-center justify-between gap-4 border-b border-[#DDD4C5] bg-[#F5F1E8]/90 px-4 py-3 backdrop-blur-lg sm:px-6 lg:px-10">
       {/* Left side */}
-      <div className="min-w-0">
-        <h2 className="truncate text-2xl font-bold text-[#4B543B] lg:text-3xl">
-          Take a look around,{" "}
-          {loading
-            ? "..."
-            : fullName.split(" ")[0]}{" "}
-          
-        </h2>
+      <div className="flex min-w-0 items-center gap-3">
+        {/* Mobile menu button */}
+        <button
+          type="button"
+          onClick={openMobileSidebar}
+          aria-label="Open sidebar"
+          className="flex shrink-0 items-center justify-center rounded-xl bg-white p-2.5 text-[#4B543B] shadow-sm transition hover:bg-[#EDE8DD] lg:hidden"
+        >
+          <Menu size={24} />
+        </button>
 
-        <p className="mt-1 text-sm text-gray-500">
-          Let's make your portfolio stand out.
-        </p>
+        <div className="min-w-0">
+          <h2 className="truncate text-xl font-bold text-[#4B543B] sm:text-2xl lg:text-3xl">
+            Take a look around,{" "}
+            {loading
+              ? "..."
+              : fullName.split(" ")[0]}
+          </h2>
+
+          <p className="mt-1 hidden text-sm text-gray-500 sm:block">
+            Let's make your portfolio stand out.
+          </p>
+        </div>
       </div>
 
       {/* Right side */}
       <div className="flex shrink-0 items-center gap-3 lg:gap-5">
-
         {/* User */}
-        <div className="flex items-center gap-3 rounded-2xl bg-white px-3 py-2 shadow-sm lg:px-4">
-
+        <div className="flex items-center gap-2 rounded-2xl bg-white px-2.5 py-2 shadow-sm sm:gap-3 sm:px-3 lg:px-4">
           {/* Avatar */}
           {avatarUrl ? (
-            <div className="relative h-10 w-10 overflow-hidden rounded-full border-2 border-[#8E77A8]/30">
+            <div className="relative h-9 w-9 overflow-hidden rounded-full border-2 border-[#8E77A8]/30 sm:h-10 sm:w-10">
               <Image
                 src={avatarUrl}
                 alt={fullName}
@@ -69,8 +84,8 @@ export default function Navbar() {
             </div>
           ) : (
             <UserCircle
-              size={40}
-              className="text-[#8E77A8]"
+              size={36}
+              className="text-[#8E77A8] sm:h-10 sm:w-10"
             />
           )}
 
@@ -84,9 +99,7 @@ export default function Navbar() {
               {loading ? "..." : jobTitle}
             </p>
           </div>
-
         </div>
-
       </div>
     </header>
   );

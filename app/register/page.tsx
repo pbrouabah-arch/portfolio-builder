@@ -47,6 +47,7 @@ export default function RegisterPage() {
           username,
           full_name: fullName,
           trial_ends_at: trialDate.toISOString(),
+          is_public: false,
         });
       }
 
@@ -340,7 +341,11 @@ export default function RegisterPage() {
         {/* FOOTER */}
         <p className="mt-6 text-center text-xs text-[#8B8175]">
           Your work. Your story. Your portfolio.
+          Check your inbox 📩
         </p>
+       
+         
+        
 
       </div>
     </main>

@@ -14,13 +14,13 @@ export default function Projects({
   return (
     <section
       id="projects"
-      className="relative overflow-hidden bg-[#F3F6FC] py-28 px-6 text-[#33415C] lg:px-8"
+      className="relative overflow-hidden bg-[#F8F2F9] py-28 px-6 text-[#3A2740] lg:px-8"
     >
       <Sparkle className="pointer-events-none absolute right-[8%] top-24 h-5 w-5 opacity-70" />
 
       <div className="mx-auto max-w-6xl text-center">
 
-        <span className={`${scriptFont.className} text-2xl text-[#7A97D1]`}>
+        <span className={`${scriptFont.className} text-2xl text-[#9B6FB0]`}>
           things I've built
         </span>
 
@@ -30,13 +30,13 @@ export default function Projects({
 
         {projects.length === 0 ? (
 
-          <div className="mx-auto max-w-md rounded-2xl border border-dashed border-[#B7CBEE] bg-white/70 p-12">
+          <div className="mx-auto max-w-md rounded-2xl border border-dashed border-[#D9B8E0] bg-white/70 p-12">
 
             <h3 className="text-2xl font-bold">
               No Projects Yet
             </h3>
 
-            <p className="mt-4 text-[#7C8FAE]">
+            <p className="mt-4 text-[#8A7191]">
               Projects will appear here after adding them from the dashboard.
             </p>
 
@@ -66,7 +66,7 @@ export default function Projects({
                     className="h-52 w-full object-cover"
                   />
                 ) : (
-                  <div className="flex h-52 w-full items-center justify-center bg-[#E4ECF9] text-4xl">
+                  <div className="flex h-52 w-full items-center justify-center bg-[#F3ECF5] text-4xl">
                     ✂︎
                   </div>
                 )}
@@ -77,7 +77,7 @@ export default function Projects({
                     {project.title}
                   </h3>
 
-                  <p className="mt-3 text-sm leading-6 text-[#7C8FAE]">
+                  <p className="mt-3 text-sm leading-6 text-[#8A7191]">
                     {project.description}
                   </p>
 
@@ -88,7 +88,7 @@ export default function Projects({
                         href={project.github_url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="rounded-full border border-[#DCE6F8] px-4 py-2 text-xs font-medium uppercase tracking-wide hover:border-[#7A97D1]"
+                        className="rounded-full border border-[#EADFF0] px-4 py-2 text-xs font-medium uppercase tracking-wide hover:border-[#9B6FB0]"
                       >
                         GitHub
                       </a>

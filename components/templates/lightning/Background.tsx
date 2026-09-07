@@ -13,7 +13,10 @@ export default function Background() {
         className={styles.backgroundImage}
       />
       <div className={styles.backgroundOverlay} />
+      <div className={styles.backgroundStorm} />
       <div className={styles.backgroundGlow} />
+      <span className={`${styles.backgroundLightning} ${styles.bgBoltOne}`}>ϟ</span>
+      <span className={`${styles.backgroundLightning} ${styles.bgBoltTwo}`}>ϟ</span>
     </div>
   );
 }

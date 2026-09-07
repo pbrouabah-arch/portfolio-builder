@@ -19,20 +19,20 @@ export default function PaperClip({ className = "", rotate = -8 }: PaperClipProp
     >
       <defs>
         <linearGradient id="paperclip-metal" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" stopColor="#F3F7FE" />
-          <stop offset="35%" stopColor="#C3D3EE" />
-          <stop offset="60%" stopColor="#8DA3D0" />
-          <stop offset="100%" stopColor="#5F76A8" />
+          <stop offset="0%" stopColor="#F8F0FA" />
+          <stop offset="35%" stopColor="#E0C3E8" />
+          <stop offset="60%" stopColor="#B98FC7" />
+          <stop offset="100%" stopColor="#6E3F7C" />
         </linearGradient>
         <filter id="paperclip-shadow" x="-40%" y="-20%" width="180%" height="140%">
-          <feDropShadow dx="2" dy="4" stdDeviation="2.5" floodColor="#33415C" floodOpacity="0.35" />
+          <feDropShadow dx="2" dy="4" stdDeviation="2.5" floodColor="#3A2740" floodOpacity="0.35" />
         </filter>
       </defs>
 
       {/* dark contact shadow, as if resting on paper */}
       <path
         d="M13 10 V60 a9 9 0 0 0 18 0 V16 a13 13 0 0 0-26 0 V66 a17 17 0 0 0 34 0 V22"
-        stroke="#33415C"
+        stroke="#3A2740"
         strokeOpacity="0.25"
         strokeWidth="6.5"
         strokeLinecap="round"

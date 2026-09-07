@@ -53,9 +53,7 @@ export default function Hero({ data }: HeroProps) {
           Digital Portfolio / 2026
         </span>
 
-        <h1
-          className={`${styles.heroName} ${scriptFont.className} gothic-hero-item`}
-        >
+        <h1 className={`${styles.heroName} ${scriptFont.className} gothic-hero-item`}>
           {data?.name || "Abismo"}
         </h1>
 
@@ -78,16 +76,11 @@ export default function Hero({ data }: HeroProps) {
           {skills.length > 0 && (
             <div className={styles.miniSkills}>
               {skills.slice(0, 4).map((skill: any, index: number) => {
-                const level = Math.min(
-                  100,
-                  Math.max(0, Number(skill?.level) || 0)
-                );
+                const level = Math.min(100, Math.max(0, Number(skill?.level) || 0));
 
                 return (
                   <div key={skill?.id || index} className={styles.miniSkill}>
-                    <span className={styles.miniSkillName}>
-                      {skill?.name || "Skill"}
-                    </span>
+                    <span className={styles.miniSkillName}>{skill?.name || "Skill"}</span>
                     <span className={styles.miniSkillBar}>
                       <span
                         className={styles.miniSkillFill}
@@ -107,12 +100,7 @@ export default function Hero({ data }: HeroProps) {
             </a>
 
             {data?.cv && (
-              <a
-                href={data.cv}
-                target="_blank"
-                rel="noreferrer"
-                className={styles.secondaryButton}
-              >
+              <a href={data.cv} target="_blank" rel="noreferrer" className={styles.secondaryButton}>
                 <Download size={13} />
                 CV
               </a>
@@ -121,9 +109,7 @@ export default function Hero({ data }: HeroProps) {
 
           <div className={styles.heroMeta}>
             <span>Based in</span>
-            <strong>
-              {[data?.city, data?.country].filter(Boolean).join(", ") || "—"}
-            </strong>
+            <strong>{[data?.city, data?.country].filter(Boolean).join(", ") || "—"}</strong>
             <span className={styles.metaLine} />
             <span>Available</span>
             <strong>For selected work</strong>
@@ -132,19 +118,25 @@ export default function Hero({ data }: HeroProps) {
       </div>
 
       <div className={`${styles.heroVisual} gothic-portrait`}>
+        <div className={styles.lightningAura} />
         <div className={styles.portraitGlow} />
+        <span className={`${styles.lightningBolt} ${styles.boltOne}`}>ϟ</span>
+        <span className={`${styles.lightningBolt} ${styles.boltTwo}`}>ϟ</span>
+        <span className={`${styles.lightningBolt} ${styles.boltThree}`}>ϟ</span>
 
-        {data?.image ? (
-          <img
-            src={data.image}
-            alt={data?.name || "Profile portrait"}
-            className={styles.portrait}
-          />
-        ) : (
-          <div className={styles.portraitFallback}>
-            <Zap size={42} />
-          </div>
-        )}
+        <div className={styles.portraitFrame}>
+          {data?.image ? (
+            <img
+              src={data.image}
+              alt={data?.name || "Profile portrait"}
+              className={styles.portrait}
+            />
+          ) : (
+            <div className={styles.portraitFallback}>
+              <Zap size={42} />
+            </div>
+          )}
+        </div>
 
         <span className={styles.visualLabel}>Identity / Portrait</span>
 
@@ -152,23 +144,18 @@ export default function Hero({ data }: HeroProps) {
           <span>01</span>
           <span>Visual Systems</span>
         </div>
-
-        {stats.length > 0 && (
-          <div className={styles.stats}>
-            {stats.slice(0, 4).map((item: any, index: number) => (
-              <div
-                key={item?.title || index}
-                className={`${styles.frame} ${styles.stat}`}
-              >
-                <span className={styles.statNumber}>{item?.number ?? "—"}</span>
-                <span className={styles.statTitle}>
-                  {item?.title || "Metric"}
-                </span>
-              </div>
-            ))}
-          </div>
-        )}
       </div>
+
+      {stats.length > 0 && (
+        <div className={`${styles.stats} gothic-hero-item`}>
+          {stats.slice(0, 4).map((item: any, index: number) => (
+            <div key={item?.title || index} className={`${styles.frame} ${styles.stat}`}>
+              <span className={styles.statNumber}>{item?.number ?? "—"}</span>
+              <span className={styles.statTitle}>{item?.title || "Metric"}</span>
+            </div>
+          ))}
+        </div>
+      )}
     </section>
   );
 }

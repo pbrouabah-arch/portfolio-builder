@@ -1,4 +1,4 @@
-import Tape from "./decor/Tape";
+import PaperClip from "./decor/PaperClip";
 import Sparkle from "./decor/Sparkle";
 import { scriptFont, serifFont } from "./fonts";
 
@@ -12,7 +12,7 @@ export default function About({
   return (
     <section
       id="about"
-      className="relative overflow-hidden bg-[#F3F6FC] px-6 py-28 text-[#33415C] lg:px-8"
+      className="relative overflow-hidden bg-[#F8F2F9] px-6 py-28 text-[#3A2740] lg:px-8"
     >
       <Sparkle className="pointer-events-none absolute right-[15%] top-16 h-5 w-5 opacity-70" />
 
@@ -20,7 +20,7 @@ export default function About({
 
         <div className="relative">
 
-          <span className={`${scriptFont.className} text-2xl text-[#7A97D1]`}>
+          <span className={`${scriptFont.className} text-2xl text-[#9B6FB0]`}>
             get to know me
           </span>
 
@@ -30,14 +30,14 @@ export default function About({
 
           <div className="relative mt-14">
 
-            <Tape className="left-1/2 top-0 -translate-x-1/2 -translate-y-1/2" rotate={-6} />
+            <PaperClip className="absolute -top-6 left-6 h-14 w-10 z-10" rotate={-8} />
 
             <div
               className="relative bg-white p-9 shadow-[0_20px_45px_rgba(51,65,92,0.1)] sm:p-12"
               style={{ clipPath: "polygon(0 2%, 100% 0, 99% 98%, 1% 100%)" }}
             >
 
-              <p className={`${serifFont.className} text-xl italic leading-9 text-[#4C5C7D]`}>
+              <p className={`${serifFont.className} text-xl italic leading-9 text-[#4F3856]`}>
                 {data.description}
               </p>
 

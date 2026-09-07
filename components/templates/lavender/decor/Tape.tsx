@@ -14,7 +14,7 @@ export default function Tape({
   rotate = -4,
   tone = "tape",
 }: TapeProps) {
-  const base = tone === "blush" ? "#C9D9F5" : "#DCE6F8";
+  const base = tone === "blush" ? "#E3C9E8" : "#EADFF0";
 
   return (
     <span

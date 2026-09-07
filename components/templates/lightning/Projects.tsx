@@ -1,4 +1,4 @@
-import { ArrowUpRight, Link2 } from "lucide-react";
+import { ArrowUpRight, Link2  } from "lucide-react";
 import styles from "./gothic.module.css";
 
 interface ProjectsProps {
@@ -66,7 +66,7 @@ export default function Projects({ data }: ProjectsProps) {
                         rel="noreferrer"
                         className={styles.projectLink}
                       >
-                        <Link2 size={11} />
+                        <Link2  size={11} />
                         Source
                       </a>
                     )}

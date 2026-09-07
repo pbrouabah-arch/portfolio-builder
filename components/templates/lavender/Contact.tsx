@@ -80,13 +80,13 @@ export default function Contact({
     <section
       id="contact"
       ref={container}
-      className="relative overflow-hidden bg-gradient-to-b from-[#E4ECF9] via-[#D6E1F4] to-[#C3D4F0] py-28 px-6 text-[#33415C] lg:px-8"
+      className="relative overflow-hidden bg-gradient-to-b from-[#F3ECF5] via-[#E9DCEE] to-[#C3D4F0] py-28 px-6 text-[#3A2740] lg:px-8"
     >
       <Sparkle className="pointer-events-none absolute right-[30%] top-10 h-5 w-5 opacity-70" />
 
       <div className="relative mx-auto max-w-4xl text-center">
 
-        <span className={`${scriptFont.className} text-2xl text-[#7A97D1]`}>
+        <span className={`${scriptFont.className} text-2xl text-[#9B6FB0]`}>
           romanticize your inbox
         </span>
 
@@ -94,15 +94,15 @@ export default function Contact({
           Let's Work Together
         </h2>
 
-        <p className="mx-auto mt-7 max-w-xl text-base leading-8 text-[#5A6B8C]">
+        <p className="mx-auto mt-7 max-w-xl text-base leading-8 text-[#5C4160]">
           Interested in working together or have a project in mind?
           Feel free to reach out on any of these.
         </p>
 
         {links.length === 0 ? (
 
-          <div className="mx-auto mt-16 max-w-md rounded-2xl border border-dashed border-[#B7CBEE] bg-white/70 p-12">
-            <p className="text-[#7C8FAE]">
+          <div className="mx-auto mt-16 max-w-md rounded-2xl border border-dashed border-[#D9B8E0] bg-white/70 p-12">
+            <p className="text-[#8A7191]">
               No contact links available.
             </p>
           </div>
@@ -127,9 +127,9 @@ export default function Contact({
                     className="relative flex flex-col items-center gap-3 rounded-2xl bg-white px-8 py-7 shadow-[0_16px_32px_rgba(51,65,92,0.12)] transition-transform duration-300 group-hover:-translate-y-2"
                     style={{ transform: `rotate(${rotate}deg)` }}
                   >
-                    <Icon size={24} className="text-[#7A97D1]" />
+                    <Icon size={24} className="text-[#9B6FB0]" />
 
-                    <span className={`${scriptFont.className} text-2xl text-[#33415C]`}>
+                    <span className={`${scriptFont.className} text-2xl text-[#3A2740]`}>
                       {platformLabel(link.platform)}
                     </span>
                   </span>

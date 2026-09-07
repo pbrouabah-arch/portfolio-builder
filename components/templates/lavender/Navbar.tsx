@@ -52,10 +52,10 @@ export default function Navbar({
 
           <a
             href="#"
-            className={`${scriptFont.className} flex shrink-0 items-center gap-1.5 text-2xl text-[#33415C]`}
+            className={`${scriptFont.className} flex shrink-0 items-center gap-1.5 text-2xl text-[#3A2740]`}
           >
             {data.name}
-            <Heart size={14} className="fill-[#8FAEE0] text-[#8FAEE0]" />
+            <Heart size={14} className="fill-[#B98FC7] text-[#B98FC7]" />
           </a>
 
           <nav
@@ -67,7 +67,7 @@ export default function Navbar({
               <a
                 key={link.name}
                 href={link.href}
-                className="shrink-0 text-xs font-medium uppercase tracking-wide text-[#5A6B8C] transition hover:text-[#33415C]"
+                className="shrink-0 text-xs font-medium uppercase tracking-wide text-[#5C4160] transition hover:text-[#3A2740]"
               >
                 {link.name}
               </a>
@@ -77,14 +77,14 @@ export default function Navbar({
 
           <a
             href="#contact"
-            className="hidden shrink-0 items-center gap-2 rounded-full bg-[#7A97D1] px-5 py-2.5 text-xs font-semibold uppercase tracking-wide text-white transition hover:scale-105 hover:bg-[#5A73A8] xl:flex"
+            className="hidden shrink-0 items-center gap-2 rounded-full bg-[#9B6FB0] px-5 py-2.5 text-xs font-semibold uppercase tracking-wide text-white transition hover:scale-105 hover:bg-[#6E3F7C] xl:flex"
           >
             Say hello
           </a>
 
           <button
             onClick={() => setOpen(!open)}
-            className="ml-auto text-[#33415C] xl:hidden"
+            className="ml-auto text-[#3A2740] xl:hidden"
             aria-label={open ? "Close menu" : "Open menu"}
           >
             {open ? <X size={24} /> : <Menu size={24} />}
@@ -101,7 +101,7 @@ export default function Navbar({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-40 overflow-y-auto bg-gradient-to-b from-[#DCE6F8] to-[#AEC3E8] xl:hidden"
+            className="fixed inset-0 z-40 overflow-y-auto bg-gradient-to-b from-[#EADFF0] to-[#C7A8D6] xl:hidden"
           >
 
             <Sparkle className="absolute left-10 top-24 h-5 w-5 opacity-70" />
@@ -114,7 +114,7 @@ export default function Navbar({
                   key={link.name}
                   href={link.href}
                   onClick={() => setOpen(false)}
-                  className={`${scriptFont.className} text-3xl text-[#33415C]`}
+                  className={`${scriptFont.className} text-3xl text-[#3A2740]`}
                 >
                   {link.name}
                 </a>

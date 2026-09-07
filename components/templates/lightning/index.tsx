@@ -1,6 +1,9 @@
 import Navbar from "./Navbar";
 import Hero from "./Hero";
 import About from "./About";
+import Experience from "./Experience";
+import Education from "./Education";
+import Achievements from "./Achievements";
 import Skills from "./Skills";
 import Projects from "./Projects";
 import Certificates from "./Certificates";
@@ -19,6 +22,9 @@ export default function GothicTemplate({ data }: GothicTemplateProps) {
       <div className={styles.page}>
         <Hero data={data} />
         <About data={data} />
+        <Experience data={data} />
+        <Education data={data} />
+        <Achievements data={data} />
         <Skills data={data} />
         <Projects data={data} />
         <Certificates data={data} />

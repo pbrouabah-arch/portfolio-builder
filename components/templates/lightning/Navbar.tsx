@@ -11,6 +11,9 @@ interface NavbarProps {
 const links = [
   { name: "Home", href: "#home" },
   { name: "About", href: "#about" },
+  { name: "Experience", href: "#experience" },
+  { name: "Education", href: "#education" },
+  { name: "Achievements", href: "#achievements" },
   { name: "Skills", href: "#skills" },
   { name: "Projects", href: "#projects" },
   { name: "Certificates", href: "#certificates" },
@@ -52,7 +55,7 @@ export default function Navbar({ data }: NavbarProps) {
           </nav>
 
           <a href="#contact" className={styles.navAction}>
-            Open Channel
+            Work With Me
           </a>
 
           <button

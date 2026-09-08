@@ -78,12 +78,19 @@ export default function RegisterPage() {
       });
 
       if (error) {
-        console.error("Supabase signup error:", error);
+  console.error("SUPABASE SIGNUP ERROR:", error);
 
-        setMessage(getErrorMessage(error));
-        setLoading(false);
-        return;
-      }
+  const details = {
+    message: error.message,
+    name: error.name,
+    status: error.status,
+    code: error.code,
+  };
+
+  setMessage(JSON.stringify(details, null, 2));
+  setLoading(false);
+  return;
+}
 
       if (!data.user) {
         setMessage(

@@ -15,42 +15,128 @@ export default function RegisterPage() {
   const [password, setPassword] = useState("");
 
   const [showPassword, setShowPassword] = useState(false);
-
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
+  const [success, setSuccess] = useState(false);
+
+  function getErrorMessage(error: unknown): string {
+    if (error instanceof Error && error.message) {
+      return error.message;
+    }
+
+    if (
+      typeof error === "object" &&
+      error !== null &&
+      "message" in error &&
+      typeof error.message === "string"
+    ) {
+      return error.message;
+    }
+
+    return "Something went wrong. Please try again.";
+  }
 
   async function handleRegister(e: React.FormEvent) {
     e.preventDefault();
 
     setLoading(true);
     setMessage("");
+    setSuccess(false);
+
+    const cleanFullName = fullName.trim();
+    const cleanUsername = username.trim().toLowerCase();
+    const cleanEmail = email.trim().toLowerCase();
+
+    if (!cleanFullName) {
+      setMessage("Please enter your full name.");
+      setLoading(false);
+      return;
+    }
+
+    if (!cleanUsername) {
+      setMessage("Please choose a username.");
+      setLoading(false);
+      return;
+    }
+
+    if (!cleanEmail) {
+      setMessage("Please enter your email.");
+      setLoading(false);
+      return;
+    }
+
+    if (password.length < 6) {
+      setMessage("Password must be at least 6 characters.");
+      setLoading(false);
+      return;
+    }
 
     try {
       const { data, error } = await supabase.auth.signUp({
-        email,
+        email: cleanEmail,
         password,
       });
 
       if (error) {
-        setMessage(error.message);
+        console.error("Supabase signup error:", error);
+
+        setMessage(getErrorMessage(error));
         setLoading(false);
         return;
       }
 
-      if (data.user) {
-        const trialDate = new Date();
-        trialDate.setDate(trialDate.getDate() + 7);
+      if (!data.user) {
+        setMessage(
+          "The account could not be created. Please check your information and try again."
+        );
+        setLoading(false);
+        return;
+      }
 
-        await supabase.from("profiles").insert({
+      /*
+       * If Supabase returns an empty identities array,
+       * the email may already belong to an existing account.
+       */
+      if (
+        data.user.identities &&
+        data.user.identities.length === 0
+      ) {
+        setMessage(
+          "An account with this email may already exist. Please try logging in."
+        );
+        setLoading(false);
+        return;
+      }
+
+      const trialDate = new Date();
+      trialDate.setDate(trialDate.getDate() + 7);
+
+      const { error: profileError } = await supabase
+        .from("profiles")
+        .insert({
           id: data.user.id,
-          email,
-          username,
-          full_name: fullName,
+          user_id: data.user.id,
+          email: cleanEmail,
+          username: cleanUsername,
+          full_name: cleanFullName,
           trial_ends_at: trialDate.toISOString(),
           is_public: false,
         });
+
+      if (profileError) {
+        console.error("Profile creation error:", profileError);
+
+        setMessage(
+          `Account created, but your profile could not be created: ${getErrorMessage(
+            profileError
+          )}`
+        );
+
+        setLoading(false);
+        return;
       }
 
+      setSuccess(true);
       setMessage(
         "Account created successfully. Check your email to confirm your account."
       );
@@ -60,8 +146,8 @@ export default function RegisterPage() {
       }, 2500);
     } catch (error) {
       console.error("Registration error:", error);
-      setMessage("Something went wrong. Please try again.");
-    } finally {
+
+      setMessage(getErrorMessage(error));
       setLoading(false);
     }
   }
@@ -69,7 +155,6 @@ export default function RegisterPage() {
   return (
     <main className="flex min-h-screen items-center justify-center bg-[#EDE7DD] px-6 py-10">
       <div className="w-full max-w-md">
-
         {/* SITE NAME */}
         <div className="mb-8 text-center">
           <h1 className="text-3xl font-bold tracking-[0.08em] text-[#3F4A30]">
@@ -86,7 +171,6 @@ export default function RegisterPage() {
           onSubmit={handleRegister}
           className="w-full rounded-3xl bg-white p-8 shadow-xl sm:p-10"
         >
-
           {/* TITLE */}
           <div className="mb-8">
             <h2 className="text-center text-4xl font-bold text-[#3F4A30]">
@@ -277,14 +361,14 @@ export default function RegisterPage() {
           {message && (
             <div
               className={`mb-5 rounded-xl border px-4 py-3 ${
-                message.includes("successfully")
+                success
                   ? "border-green-200 bg-green-50"
                   : "border-red-200 bg-red-50"
               }`}
             >
               <p
                 className={`text-center text-sm font-medium ${
-                  message.includes("successfully")
+                  success
                     ? "text-green-700"
                     : "text-red-600"
                 }`}
@@ -343,10 +427,6 @@ export default function RegisterPage() {
           Your work. Your story. Your portfolio.
           Check your inbox 📩
         </p>
-       
-         
-        
-
       </div>
     </main>
   );

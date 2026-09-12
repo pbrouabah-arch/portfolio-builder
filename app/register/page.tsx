@@ -72,25 +72,26 @@ export default function RegisterPage() {
     }
 
     try {
+      // Create Supabase Auth account
       const { data, error } = await supabase.auth.signUp({
         email: cleanEmail,
         password,
       });
 
       if (error) {
-  console.error("SUPABASE SIGNUP ERROR:", error);
+        console.error("SUPABASE SIGNUP ERROR:", error);
 
-  const details = {
-    message: error.message,
-    name: error.name,
-    status: error.status,
-    code: error.code,
-  };
+        const details = {
+          message: error.message,
+          name: error.name,
+          status: error.status,
+          code: error.code,
+        };
 
-  setMessage(JSON.stringify(details, null, 2));
-  setLoading(false);
-  return;
-}
+        setMessage(JSON.stringify(details, null, 2));
+        setLoading(false);
+        return;
+      }
 
       if (!data.user) {
         setMessage(
@@ -115,9 +116,7 @@ export default function RegisterPage() {
         return;
       }
 
-      const trialDate = new Date();
-      trialDate.setDate(trialDate.getDate() + 7);
-
+      // Create the user's portfolio profile
       const { error: profileError } = await supabase
         .from("profiles")
         .insert({
@@ -126,7 +125,6 @@ export default function RegisterPage() {
           email: cleanEmail,
           username: cleanUsername,
           full_name: cleanFullName,
-          trial_ends_at: trialDate.toISOString(),
           is_public: false,
         });
 
@@ -143,6 +141,7 @@ export default function RegisterPage() {
         return;
       }
 
+      // Registration completed successfully
       setSuccess(true);
       setMessage(
         "Account created successfully. Check your email to confirm your account."

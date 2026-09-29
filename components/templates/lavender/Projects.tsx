@@ -1,112 +1,48 @@
-import PaperClip from "./decor/PaperClip";
-import Sparkle from "./decor/Sparkle";
+import { ExternalLink, Link2 } from "lucide-react";
+import Nail from "./decor/Nail";
 import { scriptFont, serifFont } from "./fonts";
 
-interface ProjectsProps {
-  data: any;
-}
+interface ProjectsProps { data: any; }
 
-export default function Projects({
-  data,
-}: ProjectsProps) {
-  const projects = data.projects;
-
+export default function Projects({ data }: ProjectsProps) {
+  const projects = data.projects ?? [];
   return (
-    <section
-      id="projects"
-      className="relative overflow-hidden bg-[#F8F2F9] py-28 px-6 text-[#3A2740] lg:px-8"
-    >
-      <Sparkle className="pointer-events-none absolute right-[8%] top-24 h-5 w-5 opacity-70" />
-
-      <div className="mx-auto max-w-6xl text-center">
-
-        <span className={`${scriptFont.className} text-2xl text-[#9B6FB0]`}>
-          things I've built
-        </span>
-
-        <h2 className={`${serifFont.className} mb-16 mt-1 text-4xl font-semibold italic lg:text-5xl`}>
-          Projects
-        </h2>
+    <section id="projects" className="relative px-5 py-20 sm:px-8 lg:py-28">
+      <div className="mx-auto max-w-6xl">
+        <div className="mb-12 text-center text-white">
+          <p className={`${scriptFont.className} text-3xl text-[#D9B0E0]`}>things I made real</p>
+          <h2 className={`${serifFont.className} mt-1 text-5xl font-semibold`}>Projects</h2>
+          <p className="mx-auto mt-4 max-w-xl text-sm leading-6 text-white/60">A wall of selected work — each piece mounted like something worth keeping.</p>
+        </div>
 
         {projects.length === 0 ? (
-
-          <div className="mx-auto max-w-md rounded-2xl border border-dashed border-[#D9B8E0] bg-white/70 p-12">
-
-            <h3 className="text-2xl font-bold">
-              No Projects Yet
-            </h3>
-
-            <p className="mt-4 text-[#8A7191]">
-              Projects will appear here after adding them from the dashboard.
-            </p>
-
-          </div>
-
+          <div className="mx-auto max-w-md border border-white/20 bg-[#F7F0E5]/90 p-10 text-center text-sm text-[#786978]">No projects added yet.</div>
         ) : (
-
-          <div className="grid gap-16 pt-4 text-left sm:grid-cols-2 lg:grid-cols-3">
-
-            {projects.map((project: any, index: number) => (
-
-              <div
-                key={project.id}
-                className="group relative bg-white p-3 pb-6 shadow-[0_20px_45px_rgba(51,65,92,0.14)] transition duration-300 hover:-translate-y-2 hover:rotate-0"
-                style={{ transform: `rotate(${index % 3 === 0 ? -3 : index % 3 === 1 ? 3 : -1.5}deg)` }}
-              >
-
-                <PaperClip
-                  className="absolute -top-8 left-1/2 h-16 w-14 -translate-x-1/2"
-                  rotate={index % 2 === 0 ? -8 : 8}
-                />
-
-                {project.cover_image ? (
-                  <img
-                    src={project.cover_image}
-                    alt={project.title}
-                    className="h-52 w-full object-cover"
-                  />
-                ) : (
-                  <div className="flex h-52 w-full items-center justify-center bg-[#F3ECF5] text-4xl">
-                    ✂︎
-                  </div>
-                )}
-
-                <div className="px-3 pt-5">
-
-                  <h3 className={`${serifFont.className} text-xl font-bold italic`}>
-                    {project.title}
-                  </h3>
-
-                  <p className="mt-3 text-sm leading-6 text-[#8A7191]">
-                    {project.description}
-                  </p>
-
-                  <div className="mt-5 flex gap-3">
-
-                    {project.github_url && (
-                      <a
-                        href={project.github_url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="rounded-full border border-[#EADFF0] px-4 py-2 text-xs font-medium uppercase tracking-wide hover:border-[#9B6FB0]"
-                      >
-                        GitHub
-                      </a>
+          <div className="grid gap-x-7 gap-y-14 sm:grid-cols-2 lg:grid-cols-3">
+            {projects.map((project: any, index: number) => {
+              const rotate = index % 3 === 0 ? -2.4 : index % 3 === 1 ? 1.8 : -1;
+              return (
+                <article key={project.id} className="group relative pt-6" style={{ transform: `rotate(${rotate}deg)` }}>
+                  <span className="absolute left-1/2 top-0 z-20 h-7 w-px -translate-x-1/2 bg-[#8D857B]" />
+                  <Nail className="absolute left-1/2 top-0 z-30 h-10 w-9" rotate={index % 2 ? 7 : -7} />
+                  <div className="overflow-hidden border border-white/80 bg-[#F7F0E5] p-3 pb-5 text-[#55285F] shadow-[0_28px_55px_rgba(8,3,12,.42)] transition duration-500 group-hover:-translate-y-2 group-hover:rotate-0">
+                    {project.cover_image ? (
+                      <div className="relative h-56 overflow-hidden bg-[#D9CBD9]"><img src={project.cover_image} alt={project.title} className="h-full w-full object-cover object-center transition duration-700 [image-rendering:auto] group-hover:scale-105" /><div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" /></div>
+                    ) : (
+                      <div className="flex h-56 items-center justify-center bg-[#E5D8E4] text-[#835B8D]"><span className={`${scriptFont.className} text-5xl`}>work</span></div>
                     )}
-
-
+                    <div className="px-2 pt-5">
+                      <div className="flex items-start justify-between gap-3"><h3 className={`${serifFont.className} text-xl font-semibold`}>{project.title}</h3><span className="text-[9px] font-bold uppercase tracking-[.15em] text-[#80608A]">0{index + 1}</span></div>
+                      <p className="mt-3 line-clamp-3 text-sm leading-6 text-[#62466A]">{project.description}</p>
+                      {project.github_url && <a href={project.github_url} target="_blank" rel="noopener noreferrer" className="mt-5 inline-flex items-center gap-2 border-b border-[#9B719F] pb-1 text-xs font-bold uppercase tracking-[.14em] text-[#63356D] hover:text-[#4F2458]"><Link2 size={14} /> View on GitHub</a>}
+                      {project.demo_url && <a href={project.demo_url} target="_blank" rel="noopener noreferrer" className="ml-5 mt-5 inline-flex items-center gap-2 border-b border-[#9B719F] pb-1 text-xs font-bold uppercase tracking-[.14em] text-[#63356D] hover:text-[#4F2458]"><ExternalLink size={14} /> Demo</a>}
+                    </div>
                   </div>
-
-                </div>
-
-              </div>
-
-            ))}
-
+                </article>
+              );
+            })}
           </div>
-
         )}
-
       </div>
     </section>
   );

@@ -1,95 +1,147 @@
 "use client";
 
 import { useState } from "react";
-import { X } from "lucide-react";
-import Seal from "./decor/Seal";
-import Sparkle from "./decor/Sparkle";
+import { X, Award, ExternalLink } from "lucide-react";
+import Nail from "./decor/Nail";
 import { scriptFont, serifFont } from "./fonts";
 
-interface CertificatesProps {
-  data: any;
-}
+interface CertificatesProps { data: any; }
 
 export default function Certificates({ data }: CertificatesProps) {
   const certificates = data.certificates ?? [];
   const [selected, setSelected] = useState<any | null>(null);
 
   return (
-    <section
-      id="certificates"
-      className="relative overflow-hidden bg-gradient-to-b from-[#E9DCEE] to-[#F3ECF5] py-28 px-6 lg:px-8"
-    >
-      <Sparkle className="pointer-events-none absolute left-[12%] top-16 h-5 w-5 opacity-70" />
-
-      <div className="mx-auto max-w-6xl text-center">
-        <span className={`${scriptFont.className} text-2xl text-[#9B6FB0]`}>
-          proof of the work
-        </span>
-
-        <h2 className={`${serifFont.className} mb-16 mt-1 text-4xl font-semibold italic text-[#3A2740] lg:text-5xl`}>
-          Certificates
-        </h2>
+    <section id="certificates" className="relative px-5 py-20 sm:px-8 lg:py-28">
+      <div className="mx-auto max-w-6xl">
+        <div className="mb-12 text-center text-[#F7F0E5]">
+          <p className={`${scriptFont.className} text-3xl text-[#DDB8E5]`}>proof that made it onto the wall</p>
+          <h2 className={`${serifFont.className} mt-1 text-5xl font-semibold tracking-tight`}>Certificates</h2>
+          <p className="mx-auto mt-4 max-w-xl text-sm leading-6 text-white/70">
+            Hover a certificate to reveal its story. Click it to view the original certificate.
+          </p>
+        </div>
 
         {certificates.length === 0 ? (
-          <div className="mx-auto max-w-md rounded-2xl border border-dashed border-[#D9B8E0] bg-white/70 p-12">
-            <h3 className="text-2xl font-bold text-[#3A2740]">
-              No Certificates Yet
-            </h3>
-            <p className="mt-4 text-[#8A7191]">
-              Certificates will appear here after adding them from the dashboard.
-            </p>
+          <div className="mx-auto max-w-md border border-white/20 bg-[#F7F0E5]/95 p-10 text-center text-sm text-[#5B405F] shadow-[0_20px_45px_rgba(10,5,14,.25)]">
+            No certificates added yet.
           </div>
         ) : (
-          <div className="grid gap-10 pt-4 text-left sm:grid-cols-2 lg:grid-cols-3">
-            {certificates.map((certificate: any, index: number) => (
-              <button
-                type="button"
-                key={certificate.id}
-                onClick={() => setSelected(certificate)}
-                className="group relative overflow-hidden rounded-2xl bg-white text-left shadow-[0_16px_35px_rgba(51,65,92,0.1)] transition duration-300 hover:-translate-y-2 hover:shadow-[0_24px_48px_rgba(51,65,92,0.16)]"
-                style={{ transform: `rotate(${index % 2 === 0 ? -1.5 : 1.5}deg)` }}
-              >
-                {certificate.image_url ? (
-                  <div className="relative h-48 overflow-hidden">
-                    <img
-                      src={certificate.image_url}
-                      alt={certificate.title}
-                      className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
-                    />
-                    <div className="absolute inset-0 flex items-end bg-gradient-to-t from-[#3A2740]/65 via-transparent to-transparent p-4 opacity-0 transition group-hover:opacity-100">
-                      <span className={`${scriptFont.className} text-xl text-white`}>
-                        view certificate
-                      </span>
+          <div className="grid gap-x-7 gap-y-14 sm:grid-cols-2 lg:grid-cols-3">
+            {certificates.map((certificate: any, index: number) => {
+              const description =
+                certificate.description ||
+                certificate.details ||
+                certificate.credential_description ||
+                "A certificate earned as part of this portfolio journey.";
+
+              return (
+                <button
+                  type="button"
+                  key={certificate.id ?? index}
+                  onClick={() => setSelected(certificate)}
+                  aria-label={`View certificate: ${certificate.title}`}
+                  className="group relative pt-6 text-left [perspective:1200px]"
+                  style={{ transform: `rotate(${index % 2 ? 1.7 : -1.5}deg)` }}
+                >
+                  <span className="absolute left-1/2 top-0 z-30 h-7 w-px -translate-x-1/2 bg-gradient-to-b from-[#5E574F] to-[#B8B0A7]" />
+                  <Nail
+                    className="absolute left-1/2 top-0 z-40 h-10 w-9"
+                    rotate={index % 2 ? 6 : -6}
+                  />
+
+                  <div className="relative min-h-[360px] overflow-visible">
+                    <div className="absolute inset-x-0 top-0 z-10 h-full min-h-[360px] rounded-[2px] bg-[#F7F0E5]/95 shadow-[0_28px_55px_rgba(8,3,12,.42)] transition-transform duration-700 [transform-style:preserve-3d] group-hover:-translate-y-2 group-hover:rotate-0 group-hover:[transform:rotateY(180deg)]">
+                      {/* FRONT */}
+                      <div className="absolute inset-0 overflow-hidden border border-white/85 bg-[#F7F0E5] p-3 pb-5 [backface-visibility:hidden]">
+                        {certificate.image_url ? (
+                          <div className="relative h-52 overflow-hidden bg-[#E2D5DF]">
+                            <img
+                              src={certificate.image_url}
+                              alt={certificate.title}
+                              className="h-full w-full object-cover transition duration-700 group-hover:scale-[1.025]"
+                              loading="lazy"
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-[#24132A]/35 via-transparent to-white/10" />
+                          </div>
+                        ) : (
+                          <div className="flex h-52 items-center justify-center bg-gradient-to-br from-[#E8DCE7] to-[#D9C6DB]">
+                            <Award size={55} className="text-[#70457B]" />
+                          </div>
+                        )}
+
+                        <div className="px-2 pt-5">
+                          <h3 className={`${serifFont.className} text-lg font-semibold text-[#5A2D66]`}>
+                            {certificate.title}
+                          </h3>
+                          <p className="mt-2 text-sm font-medium text-[#684B6D]">
+                            {certificate.organization}
+                          </p>
+                          {certificate.issue_date && (
+                            <p className={`${scriptFont.className} mt-2 text-xl text-[#75477F]`}>
+                              {certificate.issue_date}
+                            </p>
+                          )}
+                          <span className="mt-4 inline-flex items-center gap-1.5 text-[9px] font-bold uppercase tracking-[.16em] text-[#8B6392]">
+                            <span className="h-1.5 w-1.5 rounded-full bg-[#8B6392]" />
+                            hover to read
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* BACK */}
+                      <div className="absolute inset-0 flex flex-col justify-between overflow-hidden border border-[#C9AACA] bg-[linear-gradient(145deg,#F9F0F8,#E8D9E9)] p-7 text-[#4D2857] [backface-visibility:hidden] [transform:rotateY(180deg)]">
+                        <div>
+                          <div className="flex items-center justify-between gap-3">
+                            <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-[#6E4777] text-[#F9F0F8] shadow-[0_8px_20px_rgba(68,37,76,.2)]">
+                              <Award size={18} />
+                            </span>
+                            <span className="text-[9px] font-bold uppercase tracking-[.18em] text-[#8B6392]">
+                              Certificate {String(index + 1).padStart(2, "0")}
+                            </span>
+                          </div>
+
+                          <h3 className={`${serifFont.className} mt-8 text-2xl font-semibold leading-tight text-[#54275F]`}>
+                            {certificate.title}
+                          </h3>
+
+                          {certificate.organization && (
+                            <p className="mt-3 text-sm font-semibold text-[#6D4A72]">
+                              {certificate.organization}
+                            </p>
+                          )}
+
+                          <div className="my-6 h-px w-14 bg-[#9B70A2]" />
+
+                          <p className="text-sm leading-7 text-[#614765]">
+                            {description}
+                          </p>
+                        </div>
+
+                        <div className="flex items-end justify-between gap-4 border-t border-[#CDB4D0] pt-4">
+                          <div>
+                            <p className="text-[9px] font-bold uppercase tracking-[.16em] text-[#8B6392]">
+                              {certificate.issue_date || "Portfolio record"}
+                            </p>
+                            <p className={`${scriptFont.className} mt-1 text-xl text-[#75477F]`}>
+                              click to view
+                            </p>
+                          </div>
+                          <ExternalLink size={17} className="text-[#70457B]" />
+                        </div>
+                      </div>
                     </div>
                   </div>
-                ) : (
-                  <div className="relative flex h-48 items-center justify-center bg-[#F3ECF5]">
-                    <Seal className="h-20 w-20 opacity-90" rotate={-8} />
-                  </div>
-                )}
-
-                <div className="p-6">
-                  <h3 className={`${serifFont.className} text-lg font-bold italic text-[#3A2740]`}>
-                    {certificate.title}
-                  </h3>
-                  <p className="mt-2 text-sm text-[#8A7191]">
-                    {certificate.organization}
-                  </p>
-                  {certificate.issue_date && (
-                    <p className={`${scriptFont.className} mt-2 text-xl text-[#9B6FB0]`}>
-                      issued {certificate.issue_date}
-                    </p>
-                  )}
-                </div>
-              </button>
-            ))}
+                </button>
+              );
+            })}
           </div>
         )}
       </div>
 
       {selected && (
         <div
-          className="fixed inset-0 z-[100] flex items-center justify-center bg-[#3A2740]/70 p-5 backdrop-blur-sm"
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-[#120A15]/92 p-5 backdrop-blur-md"
           onClick={() => setSelected(null)}
         >
           <div
@@ -103,7 +155,7 @@ export default function Certificates({ data }: CertificatesProps) {
               type="button"
               onClick={() => setSelected(null)}
               aria-label="Close certificate"
-              className="absolute -right-3 -top-3 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-[#3A2740] text-white shadow-lg transition hover:bg-[#6E3F7C]"
+              className="absolute -right-3 -top-3 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-[#F7F0E5] text-[#4D2857] shadow-lg transition hover:scale-105 hover:bg-white"
             >
               <X size={20} />
             </button>
@@ -112,11 +164,11 @@ export default function Certificates({ data }: CertificatesProps) {
               <img
                 src={selected.image_url}
                 alt={selected.title}
-                className="max-h-[92vh] max-w-full rounded-xl object-contain shadow-[0_30px_80px_rgba(51,65,92,0.35)]"
+                className="max-h-[92vh] max-w-full border-8 border-[#F7F0E5] object-contain shadow-[0_30px_80px_rgba(0,0,0,.5)]"
               />
             ) : (
-              <div className="flex h-[420px] w-[420px] max-w-full items-center justify-center rounded-xl bg-[#F8F2F9] shadow-[0_30px_80px_rgba(51,65,92,0.35)]">
-                <Seal className="h-28 w-28" rotate={-8} />
+              <div className="flex h-[420px] w-[420px] max-w-full items-center justify-center bg-[#F7F0E5]">
+                <Award size={100} className="text-[#70457B]" />
               </div>
             )}
           </div>

@@ -1,15 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Menu, X, Heart } from "lucide-react";
+import { Menu, X, Sparkles } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
-import Sparkle from "./decor/Sparkle";
-import { scriptFont } from "./fonts";
+import { serifFont } from "./fonts";
 
-interface NavbarProps {
-  data: any;
-}
+interface NavbarProps { data: any; }
 
 const links = [
   { name: "Home", href: "#" },
@@ -23,109 +20,95 @@ const links = [
   { name: "Contact", href: "#contact" },
 ];
 
-export default function Navbar({
-  data,
-}: NavbarProps) {
+export default function Navbar({ data }: NavbarProps) {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
-    };
-
-    window.addEventListener("scroll", handleScroll);
-
-    return () => window.removeEventListener("scroll", handleScroll);
+    const onScroll = () => setScrolled(window.scrollY > 30);
+    onScroll();
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   return (
     <>
-      <header
-        className={`fixed left-0 top-0 z-50 w-full transition-all duration-300 ${
-          scrolled
-            ? "bg-white/80 shadow-[0_8px_25px_rgba(51,65,92,0.1)] backdrop-blur-xl"
-            : "bg-white/40 backdrop-blur-md"
-        }`}
-      >
-        <div className="mx-auto flex h-20 max-w-7xl items-center gap-4 px-6 py-3 lg:px-8">
-
-          <a
-            href="#"
-            className={`${scriptFont.className} flex shrink-0 items-center gap-1.5 text-2xl text-[#3A2740]`}
-          >
-            {data.name}
-            <Heart size={14} className="fill-[#B98FC7] text-[#B98FC7]" />
+      <header className="fixed inset-x-0 top-0 z-50 px-4 pt-4 sm:px-6">
+        <div
+          className={`mx-auto flex max-w-6xl items-center gap-4 rounded-full border px-4 py-3 transition-all duration-300 ${
+            scrolled
+              ? "border-white/40 bg-[#F7F0E5]/94 shadow-[0_18px_45px_rgba(15,8,20,.3)] backdrop-blur-xl"
+              : "border-white/20 bg-[#211625]/55 text-white backdrop-blur-md"
+          }`}
+        >
+          <a href="#" className="flex min-w-0 items-center gap-2">
+            <span className={`${serifFont.className} truncate text-lg font-semibold`}>
+              {data.name}
+            </span>
+            <Sparkles size={14} className="shrink-0 opacity-70" />
           </a>
 
-          <nav
-            className="hidden min-w-0 flex-1 items-center gap-5 overflow-x-auto whitespace-nowrap px-1 [&::-webkit-scrollbar]:hidden xl:flex"
-            style={{ scrollbarWidth: "none" }}
-          >
-
+          <nav className="hidden min-w-0 flex-1 items-center justify-center gap-5 overflow-x-auto px-2 whitespace-nowrap lg:flex [&::-webkit-scrollbar]:hidden" style={{ scrollbarWidth: "none" }}>
             {links.map((link) => (
               <a
                 key={link.name}
                 href={link.href}
-                className="shrink-0 text-xs font-medium uppercase tracking-wide text-[#5C4160] transition hover:text-[#3A2740]"
+                className={`shrink-0 text-[10px] font-semibold uppercase tracking-[0.16em] transition ${
+                  scrolled ? "text-[#5B4A59] hover:text-[#8B5C98]" : "text-white/75 hover:text-white"
+                }`}
               >
                 {link.name}
               </a>
             ))}
-
           </nav>
 
           <a
             href="#contact"
-            className="hidden shrink-0 items-center gap-2 rounded-full bg-[#9B6FB0] px-5 py-2.5 text-xs font-semibold uppercase tracking-wide text-white transition hover:scale-105 hover:bg-[#6E3F7C] xl:flex"
+            className={`hidden shrink-0 rounded-full px-5 py-2 text-[10px] font-bold uppercase tracking-[0.16em] transition lg:block ${
+              scrolled
+                ? "bg-[#6F4B78] text-white hover:bg-[#56365F]"
+                : "bg-white text-[#3B273E] hover:bg-[#F7F0E5]"
+            }`}
           >
-            Say hello
+            Connect
           </a>
 
           <button
-            onClick={() => setOpen(!open)}
-            className="ml-auto text-[#3A2740] xl:hidden"
+            type="button"
+            onClick={() => setOpen((value) => !value)}
+            className={`ml-auto rounded-full p-2 lg:hidden ${scrolled ? "text-[#2C2130]" : "text-white"}`}
             aria-label={open ? "Close menu" : "Open menu"}
           >
-            {open ? <X size={24} /> : <Menu size={24} />}
+            {open ? <X size={21} /> : <Menu size={21} />}
           </button>
-
         </div>
       </header>
 
       <AnimatePresence>
-
         {open && (
-
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-40 overflow-y-auto bg-gradient-to-b from-[#EADFF0] to-[#C7A8D6] xl:hidden"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className="fixed inset-0 z-40 flex items-center justify-center bg-[#1C1020]/96 px-8 backdrop-blur-xl lg:hidden"
           >
-
-            <Sparkle className="absolute left-10 top-24 h-5 w-5 opacity-70" />
-            <Sparkle className="absolute right-12 bottom-28 h-6 w-6 opacity-70" />
-
-            <div className="flex min-h-full flex-col items-center justify-center gap-7 py-24">
-
-              {links.map((link) => (
-                <a
+            <div className="flex w-full max-w-sm flex-col items-center gap-5">
+              {links.map((link, index) => (
+                <motion.a
                   key={link.name}
                   href={link.href}
                   onClick={() => setOpen(false)}
-                  className={`${scriptFont.className} text-3xl text-[#3A2740]`}
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.035 }}
+                  className={`${serifFont.className} text-2xl text-[#F8F0E5] transition hover:text-[#D8A9E1]`}
                 >
                   {link.name}
-                </a>
+                </motion.a>
               ))}
-
             </div>
-
           </motion.div>
-
         )}
-
       </AnimatePresence>
     </>
   );

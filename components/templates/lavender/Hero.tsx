@@ -1,170 +1,71 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import Image from "next/image";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
-import { motion, AnimatePresence } from "framer-motion";
-import { ArrowRight, Download, Heart } from "lucide-react";
+import { motion } from "framer-motion";
+import { ArrowDownRight, Download, MapPin } from "lucide-react";
 
-import Background from "./Background";
-import PaperClip from "./decor/PaperClip";
-import Sparkle from "./decor/Sparkle";
+import Nail from "./decor/Nail";
 import { scriptFont, serifFont } from "./fonts";
 
-interface HeroProps {
-  data: any;
-}
+interface HeroProps { data: any; }
 
 export default function Hero({ data }: HeroProps) {
   const container = useRef<HTMLDivElement>(null);
-  const [showNote, setShowNote] = useState(false);
 
-  useGSAP(
-    () => {
-      gsap.from(".hero-left > *", {
-        opacity: 0,
-        y: 50,
-        stagger: 0.15,
-        duration: 1,
-        ease: "power4.out",
-      });
-
-      gsap.from(".hero-image", {
-        opacity: 0,
-        scale: 0.85,
-        rotate: -6,
-        duration: 1.2,
-        delay: 0.3,
-        ease: "power3.out",
-      });
-    },
-    { scope: container }
-  );
+  useGSAP(() => {
+    gsap.from(".hero-copy > *", { opacity: 0, y: 30, stagger: 0.12, duration: 0.9, ease: "power3.out" });
+    gsap.from(".hero-photo", { opacity: 0, y: 35, rotate: 5, duration: 1.1, delay: 0.2, ease: "power3.out" });
+  }, { scope: container });
 
   return (
-    <section
-      ref={container}
-      className="relative min-h-screen overflow-hidden text-[#3A2740]"
-    >
-      <Background />
+    <section ref={container} className="relative flex min-h-screen items-center px-5 pb-16 pt-28 text-[#F9F1E7] sm:px-8">
+      <div className="mx-auto grid w-full max-w-6xl items-center gap-14 lg:grid-cols-[1.05fr_.95fr]">
+        <div className="hero-copy">
+          <div className="mb-7 inline-flex items-center gap-2 rounded-full border border-white/20 bg-[#1F1223]/55 px-4 py-2 text-[10px] font-bold uppercase tracking-[0.2em] text-white/75 backdrop-blur-md">
+            <span className="h-2 w-2 rounded-full bg-[#D7A6E0] shadow-[0_0_12px_rgba(215,166,224,.8)]" />
+            portfolio / selected work
+          </div>
 
-      <div className="relative mx-auto flex min-h-screen max-w-7xl flex-col items-center justify-center gap-16 px-6 pt-32 pb-16 lg:flex-row lg:items-center lg:justify-between lg:gap-8 lg:pt-0">
-
-        <div className="hero-left flex max-w-xl flex-col items-center text-center lg:items-start lg:text-left">
-
-          <span
-            className={`${scriptFont.className} inline-flex items-center gap-2 rounded-full bg-white/60 px-5 py-1.5 text-xl text-[#6E3F7C] shadow-sm backdrop-blur-sm`}
-          >
-            <Heart size={14} className="fill-[#B98FC7] text-[#B98FC7]" />
-            available for work
-          </span>
-
-          <h1
-            className={`${scriptFont.className} mt-6 text-4xl leading-[0.95] text-[#9B6FB0] sm:text-5xl lg:text-6xl`}
-          >
+          <p className={`${scriptFont.className} text-2xl text-[#D9B0E0] sm:text-3xl`}>Hello, I&apos;m</p>
+          <h1 className={`${serifFont.className} mt-2 max-w-3xl text-5xl font-semibold leading-[.98] tracking-tight sm:text-6xl lg:text-7xl`}>
             {data.name}
           </h1>
-
-          <p className={`${serifFont.className} mt-4 text-2xl italic tracking-wide text-[#4F3856]`}>
+          <p className="mt-6 max-w-xl text-lg font-medium tracking-wide text-[#EEDBF2] sm:text-xl">
             {data.role}
           </p>
-
-          <div className="my-6 h-px w-24 bg-gradient-to-r from-transparent via-[#B98FC7] to-transparent" />
-
-          <p className="max-w-md text-base leading-8 text-[#5C4160]">
+          <div className="mt-7 h-px w-24 bg-[#D9B0E0]" />
+          <p className="mt-7 max-w-xl text-sm leading-7 text-[#E4CFE9] sm:text-base">
             {data.description}
           </p>
 
-          <div className="mt-10 flex flex-wrap justify-center gap-4 lg:justify-start">
-
-            <motion.a
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              href="#contact"
-              className="flex items-center gap-3 rounded-full bg-[#9B6FB0] px-8 py-3.5 font-semibold text-white shadow-[0_10px_25px_rgba(122,151,209,0.45)]"
-            >
-              Contact Me
-              <ArrowRight size={18} />
+          <div className="mt-9 flex flex-wrap gap-3">
+            <motion.a whileHover={{ y: -2 }} href="#projects" className="inline-flex items-center gap-2 rounded-full bg-[#F7F0E5] px-6 py-3 text-sm font-bold text-[#35233A] shadow-[0_12px_30px_rgba(15,8,20,.28)]">
+              Explore work <ArrowDownRight size={17} />
             </motion.a>
-
             {data.cv && (
-              <motion.a
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                href={data.cv}
-                target="_blank"
-                className="flex items-center gap-3 rounded-full border border-white bg-white/50 px-8 py-3.5 text-[#3A2740] backdrop-blur-sm"
-              >
-                Download CV
-                <Download size={18} />
+              <motion.a whileHover={{ y: -2 }} href={data.cv} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-6 py-3 text-sm font-semibold text-white backdrop-blur-md">
+                <Download size={17} /> CV
               </motion.a>
             )}
-
           </div>
 
+          {(data.country || data.city) && (
+            <div className="mt-8 flex items-center gap-2 text-xs uppercase tracking-[0.16em] text-[#D7BEDF]">
+              <MapPin size={14} />
+              {[data.city, data.country].filter(Boolean).join(", ")}
+            </div>
+          )}
         </div>
 
-        <motion.div
-          whileHover={{ scale: 1.02, rotate: 0 }}
-          transition={{ type: "spring", stiffness: 180 }}
-          className="hero-image relative flex -rotate-3 items-center justify-center"
-        >
+        <div className="hero-photo relative mx-auto w-full max-w-[440px]">
+          <span className="absolute -left-5 top-10 h-20 w-px bg-gradient-to-b from-transparent via-[#B8AFA5] to-transparent opacity-70" />
+          <Nail className="absolute -left-5 top-5 z-30 h-11 w-10" rotate={-8} />
 
-          {/* a note tucked behind the photo — tap/click the photo to reveal it */}
-          <AnimatePresence>
-            {showNote && (
-              <motion.div
-                initial={{ opacity: 0, x: 24, rotate: 0 }}
-                animate={{ opacity: 1, x: 0, rotate: 8 }}
-                exit={{ opacity: 0, x: 24, rotate: 0 }}
-                transition={{ duration: 0.35, ease: "easeOut" }}
-                className={`${scriptFont.className} pointer-events-none absolute -left-6 bottom-6 w-36 bg-[#FBFCFF] p-4 text-center text-xl text-[#5C4160] shadow-[0_14px_30px_rgba(51,65,92,0.15)] sm:-left-10 sm:w-40`}
-                style={{ clipPath: "polygon(0 4%, 100% 0, 98% 96%, 2% 100%)" }}
-              >
-                grow through what you go through
-              </motion.div>
-            )}
-          </AnimatePresence>
-
-          <button
-            type="button"
-            onClick={() => setShowNote((prev) => !prev)}
-            aria-pressed={showNote}
-            aria-label={
-              showNote
-                ? "Hide the note tucked behind the photo"
-                : "Show the note tucked behind the photo"
-            }
-            className="relative block h-[420px] w-[320px] cursor-pointer appearance-none rounded-sm border-0 bg-white p-3 pb-12 text-left shadow-[0_30px_60px_rgba(51,65,92,0.28)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#9B6FB0] focus-visible:ring-offset-2 sm:h-[460px] sm:w-[360px]"
-          >
-
-            <div className="relative h-full w-full overflow-hidden bg-[#EADFF0]">
-              <Image
-                src={data.image}
-                alt={data.name}
-                fill
-                priority
-                sizes="360px"
-                className="object-cover select-none"
-              />
-            </div>
-
-            <p className={`${scriptFont.className} absolute bottom-2 left-0 w-full text-center text-2xl text-[#8A7191]`}>
-              a few notes on me
-            </p>
-
-          </button>
-
-          <PaperClip
-            className="absolute -top-10 left-1/2 h-24 w-[4.5rem] -translate-x-1/2"
-            rotate={-6}
-          />
-
-          <Sparkle className="pointer-events-none absolute right-4 top-4 h-5 w-5 opacity-80" />
-
-        </motion.div>
-
+         
+        </div>
       </div>
     </section>
   );

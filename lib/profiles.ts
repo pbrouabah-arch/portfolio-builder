@@ -56,17 +56,13 @@ export async function saveProfile(profile: Partial<Profile>) {
 
   if (!user) throw new Error("User not found");
 
-  const payload = {
-    ...profile,
-    user_id: user.id,
-    email: user.email,
-  };
-
   const { error } = await supabase
     .from("profiles")
-    .upsert(payload, {
-      onConflict: "user_id",
-    });
+    .update({
+      ...profile,
+      email: user.email,
+    })
+    .eq("user_id", user.id);
 
   if (error) throw error;
 }

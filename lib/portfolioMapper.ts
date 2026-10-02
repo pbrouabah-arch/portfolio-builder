@@ -10,6 +10,9 @@ export interface Portfolio {
   skills: any[];
   projects: any[];
   certificates: any[];
+  achievements: any[];
+  education: any[];
+  experience: any[];
   social: any[];
 
   stats: {
@@ -36,6 +39,12 @@ export function mapPortfolio(data: PortfolioData): Portfolio {
 
     certificates: data.certificates ?? [],
 
+    achievements: data.achievements ?? [],
+
+    education: data.education ?? [],
+
+    experience: data.experience ?? [],
+
     social: data.socialLinks ?? [],
 
     stats: [
@@ -50,6 +59,18 @@ export function mapPortfolio(data: PortfolioData): Portfolio {
       {
         title: "Certificates",
         number: (data.certificates ?? []).length.toString(),
+      },
+      {
+        title: "Achievements",
+        number: (data.achievements ?? []).length.toString(),
+      },
+      {
+        title: "Education",
+        number: (data.education ?? []).length.toString(),
+      },
+      {
+        title: "Experience",
+        number: (data.experience ?? []).length.toString(),
       },
     ],
   };

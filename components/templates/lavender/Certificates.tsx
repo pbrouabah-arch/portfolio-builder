@@ -33,7 +33,7 @@ export default function Certificates({ data }: CertificatesProps) {
                 certificate.description ||
                 certificate.details ||
                 certificate.credential_description ||
-                "A certificate earned as part of this portfolio journey.";
+                "A certificate reflecting my commitment to learning and personal development.";
 
               return (
                 <button

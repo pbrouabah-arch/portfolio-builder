@@ -5,6 +5,9 @@ export interface PortfolioData {
   skills: any[];
   projects: any[];
   certificates: any[];
+  achievements: any[];
+  education: any[];
+  experience: any[];
   socialLinks: any[];
 }
 
@@ -34,24 +37,49 @@ export async function getPortfolioData(username: string) {
     return null;
   }
 
+  // Skills
   const { data: skills } = await supabase
     .from("skills")
     .select("*")
     .eq("user_id", profile.user_id)
     .order("display_order");
 
+  // Projects
   const { data: projects } = await supabase
     .from("projects")
     .select("*")
     .eq("user_id", profile.user_id)
     .order("display_order");
 
+  // Certificates
   const { data: certificates } = await supabase
     .from("certificates")
     .select("*")
     .eq("user_id", profile.user_id)
     .order("display_order");
 
+  // Achievements
+  const { data: achievements } = await supabase
+    .from("achievements")
+    .select("*")
+    .eq("user_id", profile.user_id)
+    .order("display_order");
+
+  // Education
+  const { data: education } = await supabase
+    .from("education")
+    .select("*")
+    .eq("user_id", profile.user_id)
+    .order("display_order");
+
+  // Experience
+  const { data: experience } = await supabase
+    .from("experience")
+    .select("*")
+    .eq("user_id", profile.user_id)
+    .order("display_order");
+
+  // Social links
   const { data: socialLinks } = await supabase
     .from("social_links")
     .select("*")
@@ -63,6 +91,9 @@ export async function getPortfolioData(username: string) {
     skills: skills ?? [],
     projects: projects ?? [],
     certificates: certificates ?? [],
+    achievements: achievements ?? [],
+    education: education ?? [],
+    experience: experience ?? [],
     socialLinks: socialLinks ?? [],
   };
 }
@@ -85,7 +116,7 @@ export async function getMyPortfolioData(): Promise<PortfolioData | null> {
     return null;
   }
 
-  // Get current user's profile
+  // Profile
   const {
     data: profile,
     error: profileError,
@@ -103,7 +134,7 @@ export async function getMyPortfolioData(): Promise<PortfolioData | null> {
     throw profileError;
   }
 
-  // Get skills
+  // Skills
   const {
     data: skills,
     error: skillsError,
@@ -117,7 +148,7 @@ export async function getMyPortfolioData(): Promise<PortfolioData | null> {
     throw skillsError;
   }
 
-  // Get projects
+  // Projects
   const {
     data: projects,
     error: projectsError,
@@ -131,7 +162,7 @@ export async function getMyPortfolioData(): Promise<PortfolioData | null> {
     throw projectsError;
   }
 
-  // Get certificates
+  // Certificates
   const {
     data: certificates,
     error: certificatesError,
@@ -145,7 +176,49 @@ export async function getMyPortfolioData(): Promise<PortfolioData | null> {
     throw certificatesError;
   }
 
-  // Get social links
+  // Achievements
+  const {
+    data: achievements,
+    error: achievementsError,
+  } = await supabase
+    .from("achievements")
+    .select("*")
+    .eq("user_id", user.id)
+    .order("display_order");
+
+  if (achievementsError) {
+    throw achievementsError;
+  }
+
+  // Education
+  const {
+    data: education,
+    error: educationError,
+  } = await supabase
+    .from("education")
+    .select("*")
+    .eq("user_id", user.id)
+    .order("display_order");
+
+  if (educationError) {
+    throw educationError;
+  }
+
+  // Experience
+  const {
+    data: experience,
+    error: experienceError,
+  } = await supabase
+    .from("experience")
+    .select("*")
+    .eq("user_id", user.id)
+    .order("display_order");
+
+  if (experienceError) {
+    throw experienceError;
+  }
+
+  // Social links
   const {
     data: socialLinks,
     error: socialLinksError,
@@ -164,6 +237,9 @@ export async function getMyPortfolioData(): Promise<PortfolioData | null> {
     skills: skills ?? [],
     projects: projects ?? [],
     certificates: certificates ?? [],
+    achievements: achievements ?? [],
+    education: education ?? [],
+    experience: experience ?? [],
     socialLinks: socialLinks ?? [],
   };
 }

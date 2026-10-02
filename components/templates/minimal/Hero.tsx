@@ -1,7 +1,6 @@
 "use client";
 
 import { useRef } from "react";
-import Image from "next/image";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { motion } from "framer-motion";
@@ -48,10 +47,8 @@ export default function Hero({ data }: HeroProps) {
       <Background />
 
       <div className="relative z-10 mx-auto grid min-h-screen w-full max-w-7xl grid-cols-1 items-center gap-14 px-6 pt-24 sm:px-8 lg:grid-cols-[minmax(0,1fr)_460px] lg:gap-10 lg:px-10 lg:pt-0">
-
         <div className="hero-left min-w-0 max-w-2xl lg:pr-4">
 
-         
           <h1
             className={`${scriptFont.className} mt-8 text-6xl leading-none text-[#4B5140] lg:text-7xl`}
           >
@@ -62,7 +59,9 @@ export default function Hero({ data }: HeroProps) {
             {data.name}
           </h2>
 
-          <p className={`${serifFont.className} mt-5 text-2xl italic text-[#6E6152]`}>
+          <p
+            className={`${serifFont.className} mt-5 text-2xl italic text-[#6E6152]`}
+          >
             {data.role}
           </p>
 
@@ -71,7 +70,6 @@ export default function Hero({ data }: HeroProps) {
           </p>
 
           <div className="mt-10 flex flex-wrap gap-5">
-
             <motion.a
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
@@ -94,16 +92,16 @@ export default function Hero({ data }: HeroProps) {
                 <Download size={18} />
               </motion.a>
             )}
-
           </div>
 
           <div className="mt-20 flex flex-wrap gap-6">
-
             {data.stats.map((item: any, index: number) => (
               <div
                 key={item.title}
                 className="relative rounded-2xl border border-[#C9B489] bg-[#E0D3B5]/60 px-7 py-5"
-                style={{ transform: `rotate(${index % 2 === 0 ? -2 : 2}deg)` }}
+                style={{
+                  transform: `rotate(${index % 2 === 0 ? -2 : 2}deg)`,
+                }}
               >
                 <Tape
                   className="left-1/2 top-0 -translate-x-1/2 -translate-y-1/2"
@@ -117,12 +115,9 @@ export default function Hero({ data }: HeroProps) {
                 <p className="mt-1 text-sm text-[#6E6152]">
                   {item.title}
                 </p>
-
               </div>
             ))}
-
           </div>
-
         </div>
 
         <motion.div
@@ -130,33 +125,33 @@ export default function Hero({ data }: HeroProps) {
           transition={{ type: "spring", stiffness: 180 }}
           className="hero-image relative mx-auto hidden h-[540px] w-[460px] -rotate-3 items-center justify-center lg:flex"
         >
-
           <div className="absolute inset-x-5 top-7 h-[480px] w-[420px] rounded-sm bg-[#F5F0E6] p-4 pb-16 shadow-[0_25px_60px_rgba(54,44,35,0.3)]">
-
             <div className="relative h-full w-full overflow-hidden bg-[#E0D3B5]">
-              <Image
-                src={data.image}
-                alt={data.name}
-                fill
-                priority
-                sizes="420px"
-                className="object-cover select-none"
-              />
+              {data.image ? (
+                <img
+                  src={data.image}
+                  alt={data.name}
+                  className="h-full w-full object-cover select-none"
+                />
+              ) : (
+                <div className="flex h-full w-full items-center justify-center text-[#6E6152]">
+                  No photo
+                </div>
+              )}
             </div>
 
-            <p className={`${scriptFont.className} absolute bottom-3 left-0 w-full text-center text-2xl text-[#6E6152]`}>
+            <p
+              className={`${scriptFont.className} absolute bottom-3 left-0 w-full text-center text-2xl text-[#6E6152]`}
+            >
               a few notes on me
             </p>
-
           </div>
 
           <Tape
             className="left-1/2 top-3 z-20 -translate-x-1/2"
             rotate={-3}
           />
-
         </motion.div>
-
       </div>
     </section>
   );

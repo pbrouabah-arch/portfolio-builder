@@ -1,6 +1,6 @@
 import Navbar from "./Navbar";
 import Hero from "./Hero";
-import About from "./About";
+
 import Skills from "./Skills";
 import Projects from "./Projects";
 import Certificates from "./Certificates";
@@ -22,7 +22,7 @@ export default function MinimalTemplate({
 
       <Hero data={data} />
 
-      <About data={data} />
+      
 
       <Skills data={data} />
 

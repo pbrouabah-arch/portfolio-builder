@@ -7,21 +7,26 @@ import {
   Briefcase,
   MapPinned,
   Globe,
-  Lock,
-  ShieldCheck,
   CheckCircle2,
-  Clock3,
-  MessageCircle,
-  Send,
-  X,
+  Copy,
+  ExternalLink,
+  Check,
 } from "lucide-react";
 
 import { getProfile, type Profile } from "@/lib/profiles";
+import { supabase } from "@/lib/supabase";
 
 export default function FinalPortfolioPage() {
   const [profile, setProfile] = useState<Profile | null>(null);
+
   const [loading, setLoading] = useState(true);
-  const [showModal, setShowModal] = useState(false);
+  const [publishing, setPublishing] = useState(false);
+
+  const [published, setPublished] = useState(false);
+  const [publicUrl, setPublicUrl] = useState("");
+
+  const [copied, setCopied] = useState(false);
+  const [publishError, setPublishError] = useState("");
 
   useEffect(() => {
     loadProfile();
@@ -30,7 +35,15 @@ export default function FinalPortfolioPage() {
   async function loadProfile() {
     try {
       const data = await getProfile();
+
       setProfile(data);
+
+      if (data?.is_public && data.username) {
+        setPublished(true);
+        setPublicUrl(
+          `${window.location.origin}/u/${data.username}`
+        );
+      }
     } catch (error) {
       console.error("Failed to load profile:", error);
     } finally {
@@ -38,43 +51,76 @@ export default function FinalPortfolioPage() {
     }
   }
 
-  function handleSubmitRequest() {
-    setShowModal(true);
-  }
-
-  function handleWhatsApp() {
+  async function handlePublish() {
     if (!profile) return;
 
-    const message = `
-Hello, I would like to publish my portfolio.
+    setPublishing(true);
+    setPublishError("");
 
-━━━━━━━━━━━━━━━━━━
-PORTFOLIO DETAILS
-━━━━━━━━━━━━━━━━━━
+    try {
+      const {
+        data: { user },
+        error: authError,
+      } = await supabase.auth.getUser();
 
-Name: ${profile.full_name || "-"}
-Username: ${profile.username || "-"}
-Email: ${profile.email || "-"}
-Phone: ${profile.phone || "-"}
-Job Title: ${profile.job_title || "-"}
-Selected Template: ${profile.template_id || "-"}
+      if (authError || !user) {
+        throw new Error(
+          "You must be logged in to publish your portfolio."
+        );
+      }
 
-━━━━━━━━━━━━━━━━━━
+      const { error: updateError } = await supabase
+        .from("profiles")
+        .update({
+          is_public: true,
+          publication_status: "published",
+          published_at: new Date().toISOString(),
+        })
+        .eq("user_id", user.id);
 
-My portfolio is ready for review and publication.
+      if (updateError) {
+        throw updateError;
+      }
 
-Thank you.
-    `.trim();
+      const url =
+        `${window.location.origin}/u/${profile.username}`;
 
-    const phoneNumber = "213775480437";
+      setPublicUrl(url);
+      setPublished(true);
 
-    const whatsappUrl =
-      `https://wa.me/${phoneNumber}?text=` +
-      encodeURIComponent(message);
+      setProfile({
+        ...profile,
+        is_public: true,
+      });
+    } catch (error) {
+      console.error("Publish failed:", error);
 
-    window.open(whatsappUrl, "_blank");
+      setPublishError(
+        error instanceof Error
+          ? error.message
+          : "Failed to publish your portfolio."
+      );
+    } finally {
+      setPublishing(false);
+    }
+  }
 
-    setShowModal(false);
+  async function handleCopyLink() {
+    if (!publicUrl) return;
+
+    try {
+      await navigator.clipboard.writeText(publicUrl);
+
+      setCopied(true);
+
+      setTimeout(() => {
+        setCopied(false);
+      }, 2000);
+    } catch (error) {
+      console.error("Copy failed:", error);
+
+      setPublishError("Unable to copy the portfolio link.");
+    }
   }
 
   if (loading) {
@@ -108,439 +154,415 @@ Thank you.
   }
 
   return (
-    <>
-      <main className="space-y-10 pb-16">
+    <main className="space-y-10 pb-16">
 
-        {/* HERO */}
+      {/* HERO */}
+      <section className="relative overflow-hidden rounded-[32px] bg-gradient-to-br from-[#8E77A8] via-[#80699B] to-[#625276] p-8 text-white shadow-xl md:p-12">
 
-        <section className="relative overflow-hidden rounded-[32px] bg-gradient-to-br from-[#8E77A8] via-[#80699B] to-[#625276] p-8 text-white shadow-xl md:p-12">
+        <div className="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-white/10 blur-3xl" />
 
-          <div className="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-white/10 blur-3xl" />
+        <div className="absolute -bottom-24 left-1/3 h-72 w-72 rounded-full bg-white/10 blur-3xl" />
 
-          <div className="absolute -bottom-24 left-1/3 h-72 w-72 rounded-full bg-white/10 blur-3xl" />
+        <div className="relative">
 
-          <div className="relative">
+          <div className="inline-flex items-center gap-2 rounded-full bg-white/15 px-4 py-2 text-sm font-medium backdrop-blur-sm">
+            <Globe size={17} />
 
-            <div className="inline-flex items-center gap-2 rounded-full bg-white/15 px-4 py-2 text-sm font-medium backdrop-blur-sm">
-              <ShieldCheck size={17} />
-              Premium Publication Service
-            </div>
-
-            <h1 className="mt-7 text-4xl font-bold tracking-tight md:text-5xl">
-              Publish Portfolio
-            </h1>
-
-            <p className="mt-5 max-w-3xl text-base leading-8 text-white/90 md:text-lg">
-              Your portfolio has been successfully generated and is ready
-              for publication. Before publication, we personally review
-              every portfolio to make sure everything looks professional.
-            </p>
-
+            Portfolio Publication
           </div>
 
-        </section>
+          <h1 className="mt-7 text-4xl font-bold tracking-tight md:text-5xl">
+            Final Portfolio
+          </h1>
 
-        {/* ARABIC EXPLANATION */}
-
-        <section className="rounded-[32px] border border-[#DDD4C5] bg-white p-8 shadow-sm md:p-10">
-
-          <div className="max-w-4xl">
-
-            <h2
-              dir="rtl"
-              className="text-3xl font-bold text-[#2F3A25]"
-            >
-              بورتفوليو الخاص بك أصبح جاهزًا
-            </h2>
-
-            <p
-              dir="rtl"
-              className="mt-5 text-lg leading-9 text-[#6B7280]"
-            >
-              تم إنشاء بورتفوليو الخاص بك بنجاح.
-              <br />
-              قبل نشره، نقوم بمراجعته يدويًا للتأكد من جودة التصميم،
-              وسلامة المحتوى، وعمل الروابط، وتوافقه مع مختلف الأجهزة.
-              <br />
-              بعد إتمام عملية الدفع والموافقة على النشر، سنقوم بنشر
-              البورتفوليو وإرسال الرابط الخاص بك.
-            </p>
-
-          </div>
-
-        </section>
-
-        {/* PORTFOLIO SUMMARY */}
-
-        <section className="rounded-[32px] border border-[#DDD4C5] bg-white p-8 shadow-sm md:p-10">
-
-          <div>
-            <h2 className="text-3xl font-bold text-[#2F3A25]">
-              Portfolio Summary
-            </h2>
-
-            <p className="mt-2 text-[#6B7280]">
-              Review the information that will be used for your portfolio.
-            </p>
-          </div>
-
-          <div className="mt-10 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-
-            <SummaryCard
-              icon={<User size={22} />}
-              title="Full Name"
-              value={profile.full_name}
-            />
-
-            <SummaryCard
-              icon={<User size={22} />}
-              title="Username"
-              value={profile.username}
-            />
-
-            <SummaryCard
-              icon={<LayoutTemplate size={22} />}
-              title="Selected Template"
-              value={profile.template_id}
-            />
-
-            <SummaryCard
-              icon={<Briefcase size={22} />}
-              title="Job Title"
-              value={profile.job_title}
-            />
-
-            <SummaryCard
-              icon={<Globe size={22} />}
-              title="Country"
-              value={profile.country}
-            />
-
-            <SummaryCard
-              icon={<MapPinned size={22} />}
-              title="City"
-              value={profile.city}
-            />
-
-          </div>
-
-        </section>
-
-        {/* HIDDEN PORTFOLIO LINK */}
-
-        <section className="rounded-[32px] border border-[#DDD4C5] bg-[#F8F6F2] p-8 shadow-sm md:p-10">
-
-          <div className="flex items-start gap-5">
-
-            <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-[#8E77A8] text-white">
-              <Lock size={25} />
-            </div>
-
-            <div>
-
-              <h2 className="text-2xl font-bold text-[#2F3A25]">
-                Portfolio Link
-              </h2>
-
-              <p className="mt-2 text-[#6B7280]">
-                Hidden until your portfolio is published.
-              </p>
-
-            </div>
-
-          </div>
-
-          <div className="mt-7 rounded-2xl border border-dashed border-[#CFC4B2] bg-white p-6">
-
-            <div className="flex items-center gap-3">
-
-              <div className="h-3 w-3 rounded-full bg-[#CFC4B2]" />
-              <div className="h-3 w-3 rounded-full bg-[#CFC4B2]" />
-              <div className="h-3 w-3 rounded-full bg-[#CFC4B2]" />
-
-              <span className="ml-2 text-sm text-[#9CA3AF]">
-                Your permanent portfolio URL
-              </span>
-
-            </div>
-
-            <p className="mt-5 text-base leading-7 text-[#6B7280]">
-              The permanent link will only be generated after your
-              publication request has been reviewed and approved.
-            </p>
-
-          </div>
-
-        </section>
-
-        {/* MANUAL REVIEW */}
-
-        <section className="rounded-[32px] border border-[#DDD4C5] bg-white p-8 shadow-sm md:p-10">
-
-          <h2 className="text-3xl font-bold text-[#2F3A25]">
-            Why Manual Review?
-          </h2>
-
-          <p className="mt-3 max-w-3xl text-[#6B7280]">
-            We do not simply generate a portfolio and leave you alone.
-            Every portfolio goes through a final quality review before
-            publication.
+          <p className="mt-5 max-w-3xl text-base leading-8 text-white/90 md:text-lg">
+            Your portfolio is ready. Publish it to make it publicly
+            accessible and receive your personal portfolio link.
           </p>
 
-          <div className="mt-8 grid gap-5 md:grid-cols-2">
+        </div>
+      </section>
 
-            <ReviewItem
-              title="Responsive Design"
-              description="We check how your portfolio looks on different screen sizes."
-            />
 
-            <ReviewItem
-              title="Content Review"
-              description="We make sure your information is displayed correctly."
-            />
+      {/* ARABIC EXPLANATION */}
+      <section className="rounded-[32px] border border-[#DDD4C5] bg-white p-8 shadow-sm md:p-10">
 
-            <ReviewItem
-              title="Links Verification"
-              description="Important links and buttons are checked before publication."
-            />
+        <div className="max-w-4xl">
 
-            <ReviewItem
-              title="Visual Quality"
-              description="We review spacing, layout, images and overall presentation."
-            />
-
-            <ReviewItem
-              title="Portfolio Performance"
-              description="We make sure the final portfolio loads and works correctly."
-            />
-
-            <ReviewItem
-              title="Final Quality Check"
-              description="Your portfolio receives a final professional review."
-            />
-
-          </div>
-
-        </section>
-
-        {/* TIMELINE */}
-
-        <section className="rounded-[32px] border border-[#DDD4C5] bg-white p-8 shadow-sm md:p-10">
-
-          <h2 className="text-3xl font-bold text-[#2F3A25]">
-            What Happens Next?
-          </h2>
-
-          <p className="mt-3 text-[#6B7280]">
-            Your portfolio goes through a simple publication process.
-          </p>
-
-          <div className="mt-10 space-y-6">
-
-            <TimelineStep
-              number="1"
-              title="Submit Your Request"
-              description="Send us your publication request."
-            />
-
-            <TimelineStep
-              number="2"
-              title="Manual Review"
-              description="We review your portfolio and make sure everything is ready."
-            />
-
-            <TimelineStep
-              number="3"
-              title="Payment"
-              description="We provide you with the payment instructions."
-            />
-
-            <TimelineStep
-              number="4"
-              title="Publication"
-              description="After payment confirmation, we publish your portfolio."
-            />
-
-            <TimelineStep
-              number="5"
-              title="Receive Your Link"
-              description="You receive your permanent portfolio link."
-              last
-            />
-
-          </div>
-
-        </section>
-
-        {/* MAIN CTA */}
-
-        <section className="overflow-hidden rounded-[32px] bg-[#8E77A8] p-8 text-center text-white shadow-xl md:p-12">
-
-          <div className="mx-auto max-w-3xl">
-
-            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-white/15">
-              <Send size={28} />
-            </div>
-
-            <h2 className="mt-7 text-4xl font-bold">
-              Ready to Publish?
-            </h2>
-
-            <p className="mt-5 text-lg leading-8 text-white/90">
-              Submit your request and contact us to complete the
-              publication process. We will review your portfolio,
-              provide payment instructions and publish it after
-              payment confirmation.
-            </p>
-
-            <button
-              onClick={handleSubmitRequest}
-              className="mt-9 inline-flex items-center gap-3 rounded-full bg-white px-8 py-4 text-lg font-semibold text-[#8E77A8] shadow-lg transition hover:scale-105 hover:shadow-xl"
-            >
-              <MessageCircle size={22} />
-              Submit for Review
-            </button>
-
-          </div>
-
-        </section>
-
-        {/* FUTURE UPDATES */}
-
-        <section className="rounded-[32px] border border-[#DDD4C5] bg-[#F8F6F2] p-8 md:p-10">
-
-          <div className="flex items-start gap-5">
-
-            <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-[#2F3A25] text-white">
-              <Clock3 size={24} />
-            </div>
-
-            <div>
-
-              <h2 className="text-3xl font-bold text-[#2F3A25]">
-                Future Updates
-              </h2>
-
-              <p className="mt-4 max-w-3xl text-lg leading-8 text-[#6B7280]">
-                Your dashboard remains available after publication.
-                You can continue changing your information and updating
-                your portfolio whenever you want. Contact us when you
-                want the updated version to be published.
-              </p>
-
-            </div>
-
-          </div>
-
-        </section>
-
-      </main>
-
-      {/* CONFIRMATION MODAL */}
-
-      {showModal && (
-
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm"
-          onClick={() => setShowModal(false)}
-        >
-
-          <div
-            className="max-h-[90vh] w-full max-w-xl overflow-y-auto rounded-[32px] bg-white p-7 shadow-2xl md:p-10"
-            onClick={(event) => event.stopPropagation()}
+          <h2
+            dir="rtl"
+            className="text-3xl font-bold text-[#2F3A25]"
           >
+            بورتفوليو الخاص بك أصبح جاهزًا
+          </h2>
 
-            <div className="flex items-start justify-between gap-5">
+          <p
+            dir="rtl"
+            className="mt-5 text-lg leading-9 text-[#6B7280]"
+          >
+            تم إنشاء بورتفوليو الخاص بك بنجاح.
+            <br />
+            <br />
+            يمكنك الآن نشره مباشرة ليصبح متاحًا للعامة والحصول على
+            رابط خاص بك.
+            <br />
+            <br />
+            بعد النشر، يمكنك مشاركة الرابط مع الجامعات والشركات
+            وأي شخص تريد.
+          </p>
 
-              <div>
+        </div>
 
-                <h2 className="text-3xl font-bold text-[#2F3A25]">
-                  Confirm Your Request
-                </h2>
+      </section>
 
-                <p className="mt-3 leading-7 text-[#6B7280]">
-                  Please check your information before contacting us.
+
+      {/* PORTFOLIO SUMMARY */}
+      <section className="rounded-[32px] border border-[#DDD4C5] bg-white p-8 shadow-sm md:p-10">
+
+        <div>
+
+          <h2 className="text-3xl font-bold text-[#2F3A25]">
+            Portfolio Summary
+          </h2>
+
+          <p className="mt-2 text-[#6B7280]">
+            Review the information that will be used for your portfolio.
+          </p>
+
+        </div>
+
+
+        <div className="mt-10 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+
+          <SummaryCard
+            icon={<User size={22} />}
+            title="Full Name"
+            value={profile.full_name}
+          />
+
+          <SummaryCard
+            icon={<User size={22} />}
+            title="Username"
+            value={profile.username}
+          />
+
+          <SummaryCard
+            icon={<LayoutTemplate size={22} />}
+            title="Selected Template"
+            value={profile.template_id}
+          />
+
+          <SummaryCard
+            icon={<Briefcase size={22} />}
+            title="Job Title"
+            value={profile.job_title}
+          />
+
+          <SummaryCard
+            icon={<Globe size={22} />}
+            title="Country"
+            value={profile.country}
+          />
+
+          <SummaryCard
+            icon={<MapPinned size={22} />}
+            title="City"
+            value={profile.city}
+          />
+
+        </div>
+
+      </section>
+
+
+      {/* PUBLISH SECTION */}
+      <section className="overflow-hidden rounded-[32px] bg-[#8E77A8] p-8 text-white shadow-xl md:p-12">
+
+        <div className="mx-auto max-w-3xl text-center">
+
+          {!published ? (
+            <>
+              <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-white/15">
+                <Globe size={28} />
+              </div>
+
+              <h2 className="mt-7 text-4xl font-bold">
+                Publish Your Portfolio
+              </h2>
+
+              <p className="mt-5 text-lg leading-8 text-white/90">
+                Your portfolio is ready to go live.
+                Publish it now and get your public portfolio link.
+              </p>
+
+              <p
+                dir="rtl"
+                className="mt-4 text-lg leading-8 text-white/90"
+              >
+                بورتفوليو الخاص بك جاهز للنشر.
+                اضغط على الزر لجعله متاحًا للعامة والحصول على رابطك الخاص.
+              </p>
+
+
+              {/* ERROR */}
+              {publishError && (
+                <div className="mt-6 rounded-2xl bg-red-500/20 p-4 text-sm text-white">
+                  {publishError}
+                </div>
+              )}
+
+
+              {/* PUBLISH BUTTON */}
+              <button
+                onClick={handlePublish}
+                disabled={publishing}
+                className="
+                  mt-9
+                  inline-flex
+                  items-center
+                  justify-center
+                  gap-3
+                  rounded-full
+                  bg-white
+                  px-10
+                  py-4
+                  text-lg
+                  font-bold
+                  text-[#8E77A8]
+                  shadow-lg
+                  transition
+                  hover:scale-105
+                  hover:shadow-xl
+                  disabled:cursor-not-allowed
+                  disabled:opacity-60
+                "
+              >
+                <Globe size={22} />
+
+                {publishing
+                  ? "Publishing..."
+                  : "Publish My Portfolio"}
+              </button>
+            </>
+          ) : (
+            <>
+              {/* SUCCESS ICON */}
+              <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-white">
+                <Check size={32} className="text-[#2F3A25]" />
+              </div>
+
+
+              <h2 className="mt-7 text-4xl font-bold">
+                Portfolio Published!
+              </h2>
+
+
+              <p className="mt-5 text-lg leading-8 text-white/90">
+                Your portfolio is now publicly available.
+              </p>
+
+
+              <p
+                dir="rtl"
+                className="mt-3 text-lg leading-8 text-white/90"
+              >
+                تم نشر البورتفوليو الخاص بك بنجاح وأصبح متاحًا للعامة.
+              </p>
+
+
+              {/* PUBLIC LINK */}
+              <div className="mt-8 rounded-2xl bg-white/10 p-5 backdrop-blur-sm">
+
+                <p className="mb-3 text-sm font-medium text-white/80">
+                  Your Public Portfolio Link
                 </p>
+
+                <div className="flex flex-col gap-3 sm:flex-row">
+
+                  <input
+                    type="text"
+                    value={publicUrl}
+                    readOnly
+                    className="
+                      min-w-0
+                      flex-1
+                      rounded-xl
+                      border-0
+                      bg-white
+                      px-4
+                      py-3
+                      text-sm
+                      text-[#4B5563]
+                      outline-none
+                    "
+                  />
+
+
+                  {/* COPY */}
+                  <button
+                    onClick={handleCopyLink}
+                    className="
+                      inline-flex
+                      items-center
+                      justify-center
+                      gap-2
+                      rounded-xl
+                      bg-white
+                      px-5
+                      py-3
+                      font-semibold
+                      text-[#8E77A8]
+                      transition
+                      hover:bg-[#F8F6F2]
+                    "
+                  >
+                    {copied ? (
+                      <>
+                        <Check size={18} />
+                        Copied!
+                      </>
+                    ) : (
+                      <>
+                        <Copy size={18} />
+                        Copy Link
+                      </>
+                    )}
+                  </button>
+
+                </div>
 
               </div>
 
-              <button
-                onClick={() => setShowModal(false)}
-                className="rounded-full p-2 text-[#6B7280] transition hover:bg-[#F3F0EA] hover:text-[#2F3A25]"
-                aria-label="Close"
-              >
-                <X size={22} />
-              </button>
 
-            </div>
+              {/* ACTION BUTTONS */}
+              <div className="mt-6 flex flex-col justify-center gap-3 sm:flex-row">
 
-            <div className="mt-8 space-y-4 rounded-3xl bg-[#F8F6F2] p-6">
+                <a
+                  href={publicUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="
+                    inline-flex
+                    items-center
+                    justify-center
+                    gap-2
+                    rounded-full
+                    bg-white
+                    px-8
+                    py-4
+                    font-bold
+                    text-[#8E77A8]
+                    transition
+                    hover:scale-105
+                  "
+                >
+                  <ExternalLink size={20} />
 
-              <InfoRow
-                title="Full Name"
-                value={profile.full_name}
-              />
+                  Open Portfolio
+                </a>
 
-              <InfoRow
-                title="Username"
-                value={profile.username}
-              />
 
-              <InfoRow
-                title="Email"
-                value={profile.email}
-              />
+                <a
+                  href="/dashboard"
+                  className="
+                    inline-flex
+                    items-center
+                    justify-center
+                    rounded-full
+                    border
+                    border-white/40
+                    px-8
+                    py-4
+                    font-bold
+                    text-white
+                    transition
+                    hover:bg-white/10
+                  "
+                >
+                  Back to Dashboard
+                </a>
 
-              <InfoRow
-                title="Selected Template"
-                value={profile.template_id}
-              />
+              </div>
 
-              <InfoRow
-                title="Job Title"
-                value={profile.job_title}
-              />
+            </>
+          )}
 
-            </div>
+        </div>
 
-            <div className="mt-7 rounded-2xl border border-[#DDD4C5] p-5">
+      </section>
 
-              <p className="text-sm leading-7 text-[#6B7280]">
-                By continuing, WhatsApp will open with your portfolio
-                information already prepared. You can then communicate
-                with us to complete the review and payment process.
-              </p>
 
-            </div>
+      {/* WHAT HAPPENS AFTER PUBLISHING */}
+      <section className="rounded-[32px] border border-[#DDD4C5] bg-white p-8 shadow-sm md:p-10">
 
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+        <h2 className="text-3xl font-bold text-[#2F3A25]">
+          What Happens After Publishing?
+        </h2>
 
-              <button
-                onClick={() => setShowModal(false)}
-                className="flex-1 rounded-2xl border border-[#D7D1C5] px-6 py-4 font-semibold text-[#4B5563] transition hover:bg-[#F8F6F2]"
-              >
-                Cancel
-              </button>
+        <p className="mt-3 text-[#6B7280]">
+          Once your portfolio is published, you can share your public link
+          anywhere.
+        </p>
 
-              <button
-                onClick={handleWhatsApp}
-                className="flex-1 inline-flex items-center justify-center gap-2 rounded-2xl bg-[#8E77A8] px-6 py-4 font-semibold text-white transition hover:bg-[#7C6696]"
-              >
-                <MessageCircle size={20} />
-                Continue to WhatsApp
-              </button>
 
-            </div>
+        <div className="mt-8 grid gap-5 md:grid-cols-2">
+
+          <ReviewItem
+            title="Public Access"
+            description="Anyone with your portfolio link can view your public portfolio."
+          />
+
+          <ReviewItem
+            title="Share Your Link"
+            description="Use your portfolio URL on your CV, LinkedIn, scholarship applications and job applications."
+          />
+
+          <ReviewItem
+            title="Your Dashboard"
+            description="You can continue managing your portfolio from your dashboard."
+          />
+
+          <ReviewItem
+            title="Professional Presentation"
+            description="Your selected template will be displayed through your public portfolio page."
+          />
+
+        </div>
+
+      </section>
+
+
+      {/* FINAL INFO */}
+      <section className="rounded-[32px] border border-[#DDD4C5] bg-[#F8F6F2] p-8 md:p-10">
+
+        <div className="flex items-start gap-5">
+
+          <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-[#2F3A25] text-white">
+            <CheckCircle2 size={24} />
+          </div>
+
+          <div>
+
+            <h2 className="text-3xl font-bold text-[#2F3A25]">
+              Your Portfolio, Your Link
+            </h2>
+
+            <p className="mt-4 max-w-3xl text-lg leading-8 text-[#6B7280]">
+              Your portfolio belongs to you. Once published, you receive
+              a public link that you can use to showcase your work,
+              education, skills and achievements.
+            </p>
 
           </div>
 
         </div>
 
-      )}
+      </section>
 
-    </>
+    </main>
   );
 }
+
 
 /* =========================
    SUMMARY CARD
@@ -573,6 +595,7 @@ function SummaryCard({
     </div>
   );
 }
+
 
 /* =========================
    REVIEW ITEM
@@ -607,78 +630,6 @@ function ReviewItem({
         </div>
 
       </div>
-
-    </div>
-  );
-}
-
-/* =========================
-   TIMELINE STEP
-========================= */
-
-function TimelineStep({
-  number,
-  title,
-  description,
-  last = false,
-}: {
-  number: string;
-  title: string;
-  description: string;
-  last?: boolean;
-}) {
-  return (
-    <div className="flex gap-5">
-
-      <div className="flex flex-col items-center">
-
-        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#8E77A8] font-bold text-white shadow-md">
-          {number}
-        </div>
-
-        {!last && (
-          <div className="mt-2 h-full min-h-10 w-px bg-[#DDD4C5]" />
-        )}
-
-      </div>
-
-      <div className="pb-4">
-
-        <h3 className="text-xl font-bold text-[#2F3A25]">
-          {title}
-        </h3>
-
-        <p className="mt-2 leading-7 text-[#6B7280]">
-          {description}
-        </p>
-
-      </div>
-
-    </div>
-  );
-}
-
-/* =========================
-   INFO ROW
-========================= */
-
-function InfoRow({
-  title,
-  value,
-}: {
-  title: string;
-  value: string | null;
-}) {
-  return (
-    <div className="flex flex-col gap-1 border-b border-[#E5DED1] pb-4 last:border-0 last:pb-0 sm:flex-row sm:items-center sm:justify-between">
-
-      <span className="text-sm font-medium text-[#6B7280]">
-        {title}
-      </span>
-
-      <span className="break-all font-semibold text-[#2F3A25] sm:text-right">
-        {value || "-"}
-      </span>
 
     </div>
   );

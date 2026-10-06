@@ -44,7 +44,14 @@ export default function RegisterPage() {
     setSuccess(false);
 
     const cleanFullName = fullName.trim();
-    const cleanUsername = username.trim().toLowerCase();
+
+    // Make username safe for public portfolio URLs
+    const cleanUsername = username
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, "-")
+      .replace(/[^a-z0-9_-]/g, "");
+
     const cleanEmail = email.trim().toLowerCase();
 
     if (!cleanFullName) {
@@ -54,7 +61,9 @@ export default function RegisterPage() {
     }
 
     if (!cleanUsername) {
-      setMessage("Please choose a username.");
+      setMessage(
+        "Please choose a valid username using English letters, numbers, hyphens, or underscores."
+      );
       setLoading(false);
       return;
     }
@@ -143,6 +152,7 @@ export default function RegisterPage() {
 
       // Registration completed successfully
       setSuccess(true);
+
       setMessage(
         "Account created successfully. Check your email to confirm your account."
       );
@@ -161,6 +171,7 @@ export default function RegisterPage() {
   return (
     <main className="flex min-h-screen items-center justify-center bg-[#EDE7DD] px-6 py-10">
       <div className="w-full max-w-md">
+
         {/* SITE NAME */}
         <div className="mb-8 text-center">
           <h1 className="text-3xl font-bold tracking-[0.08em] text-[#3F4A30]">
@@ -177,6 +188,7 @@ export default function RegisterPage() {
           onSubmit={handleRegister}
           className="w-full rounded-3xl bg-white p-8 shadow-xl sm:p-10"
         >
+
           {/* TITLE */}
           <div className="mb-8">
             <h2 className="text-center text-4xl font-bold text-[#3F4A30]">
@@ -254,6 +266,10 @@ export default function RegisterPage() {
                 focus:ring-[#8E77A8]/20
               "
             />
+
+            <p className="mt-2 text-xs text-[#8B8175]">
+              Use English letters, numbers, hyphens (-), or underscores (_).
+            </p>
           </div>
 
           {/* EMAIL */}

@@ -1,12 +1,15 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Menu, UserCircle } from "lucide-react";
+import { Menu, UserCircle, GraduationCap } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { getProfile, type Profile } from "@/lib/profiles";
 
 export default function Navbar() {
   const [profile, setProfile] = useState<Profile | null>(null);
   const [loading, setLoading] = useState(true);
+
+  const router = useRouter();
 
   useEffect(() => {
     loadProfile();
@@ -25,6 +28,10 @@ export default function Navbar() {
 
   function openMobileSidebar() {
     window.dispatchEvent(new Event("toggle-mobile-sidebar"));
+  }
+
+  function goToScholarships() {
+    router.push("/scholarships");
   }
 
   const fullName = profile?.full_name || "User";
@@ -61,6 +68,19 @@ export default function Navbar() {
 
       {/* Right side */}
       <div className="flex shrink-0 items-center gap-3 lg:gap-5">
+        {/* Scholarship Hub */}
+        <button
+          type="button"
+          onClick={goToScholarships}
+          className="flex items-center gap-2 rounded-xl bg-[#4B543B] px-3 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-[#3E4632] sm:px-4"
+        >
+          <GraduationCap size={20} />
+
+          <span className="hidden sm:inline">
+            Scholarship Hub
+          </span>
+        </button>
+
         {/* User */}
         <div className="flex items-center gap-2 rounded-2xl bg-white px-2.5 py-2 shadow-sm sm:gap-3 sm:px-3 lg:px-4">
           {/* Avatar */}
